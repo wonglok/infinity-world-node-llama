@@ -2,7 +2,7 @@ import path from "node:path";
 import fs from "node:fs/promises";
 import { BrowserWindow, dialog } from "electron";
 import { createElectronSideBirpc } from "../utils/createElectronSideBirpc.ts";
-import { llmFunctions, llmState } from "../state/llmState.ts";
+import {llmFunctions, llmState, defaultModelsDirectory} from "../state/llmState.ts";
 import type {RenderedFunctions} from "../../src/rpc/llmRpc.ts";
 
 export class ElectronLlmRpc {
@@ -32,6 +32,12 @@ export class ElectronLlmRpc {
                     modelsDirectory: path.resolve(res.filePaths[0]!),
                 };
             }
+        },
+        resetModelsDirectory() {
+            llmState.state = {
+                ...llmState.state,
+                modelsDirectory: defaultModelsDirectory,
+            };
         },
         async selectModelFileAndLoad() {
             const res = await dialog.showOpenDialog({

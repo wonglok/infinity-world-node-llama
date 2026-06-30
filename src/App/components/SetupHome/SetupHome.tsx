@@ -88,6 +88,10 @@ export function SetupHome() {
         await electronLlmRpc.selectModelsDirectory();
     }, []);
 
+    const resetDirectory = useCallback(async () => {
+        await electronLlmRpc.resetModelsDirectory();
+    }, []);
+
     const displayDirectory = state.modelsDirectory ?? "Loading…";
 
     // Navigate to chat once a model is loaded
@@ -135,13 +139,22 @@ export function SetupHome() {
                 <div className="mb-6 rounded-xl border border-[var(--actions-block-border-color)] bg-[var(--actions-block-background-color)] p-4">
                     <div className="mb-1 text-sm font-medium">Models storage directory</div>
                     <div className="mb-3 text-xs opacity-50 break-all font-mono">{displayDirectory}</div>
-                    <button
-                        onClick={selectDirectory}
-                        disabled={modelDownload.downloading}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--actions-block-border-color)] bg-[var(--button-background-color)] px-3 py-1.5 text-xs font-medium transition-colors hover:border-[var(--link-color)] disabled:opacity-40"
-                    >
-                        Change directory…
-                    </button>
+                    <div className="flex gap-2">
+                        <button
+                            onClick={selectDirectory}
+                            disabled={modelDownload.downloading}
+                            className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--actions-block-border-color)] bg-[var(--button-background-color)] px-3 py-1.5 text-xs font-medium transition-colors hover:border-[var(--link-color)] disabled:opacity-40"
+                        >
+                            Change directory…
+                        </button>
+                        <button
+                            onClick={resetDirectory}
+                            disabled={modelDownload.downloading}
+                            className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--actions-block-border-color)] bg-[var(--button-background-color)] px-3 py-1.5 text-xs font-medium transition-colors hover:border-[var(--link-color)] disabled:opacity-40"
+                        >
+                            Reset to default
+                        </button>
+                    </div>
                 </div>
 
                 <div className="mb-10">
@@ -166,21 +179,33 @@ export function SetupHome() {
                             <div className="flex flex-wrap gap-2">
                                 {m.variants.map((v) => {
                                     const isLastClicked = v.uri === lastClickedUri;
+                                    const isDownloading = modelDownload.downloading && modelDownload.modelUri === v.uri;
                                     return (
-                                        <button
-                                            key={v.uri}
-                                            onClick={() => downloadModel(v.uri)}
-                                            disabled={modelDownload.downloading}
-                                            className={
-                                                "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors disabled:opacity-40"
-                                                + (isLastClicked
-                                                    ? " border-[var(--link-color)] bg-[var(--button-hover-border-color)]/15"
-                                                    : " border-[var(--actions-block-border-color)] bg-[var(--button-background-color)] hover:border-[var(--link-color)]")
-                                            }
-                                        >
-                                            <DownloadIconSVG className="h-3.5 w-3.5" />
-                                            {v.label}
-                                        </button>
+                                        <div key={v.uri} className="inline-flex flex-col items-center gap-0.5">
+                                            <button
+                                                onClick={() => downloadModel(v.uri)}
+                                                disabled={modelDownload.downloading}
+                                                className={
+                                                    "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors disabled:opacity-40"
+                                                    + (isLastClicked
+                                                        ? " border-purple-500 bg-purple-500/10 hover:border-purple-700"
+                                                        : " border-black bg-[var(--button-background-color)] hover:border-zinc-600")
+                                                }
+                                            >
+                                                {isDownloading ? (
+                                                    <svg className="h-3.5 w-3.5 animate-spin" viewBox="0 0 24 24" fill="none">
+                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                                                    </svg>
+                                                ) : (
+                                                    <DownloadIconSVG className="h-3.5 w-3.5" />
+                                                )}
+                                                {v.label}
+                                            </button>
+                                            {isLastClicked && !isDownloading && (
+                                                <span className="text-[10px] text-purple-400 font-medium">Last used</span>
+                                            )}
+                                        </div>
                                     );
                                 })}
                             </div>

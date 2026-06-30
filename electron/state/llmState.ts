@@ -16,10 +16,10 @@ import { withLock, State } from "lifecycle-utils";
 import packageJson from "../../package.json";
 import { modelFunctions } from "../llm/modelFunctions.js";
 
-const defaultModelsDirectory = path.join(
-    app.getPath("appData"),
+export const defaultModelsDirectory = path.join(
+    app.getPath("home"),
     "infinity-world",
-    "models",
+    "ai-models",
 );
 
 export const llmState = new State<LlmState>({

@@ -1,9 +1,19 @@
 import path from "node:path";
+import os from "node:os";
 import fs from "node:fs/promises";
-import { BrowserWindow, dialog } from "electron";
-import { createElectronSideBirpc } from "../utils/createElectronSideBirpc.ts";
+import {BrowserWindow, dialog} from "electron";
+import {readGgufFileInfo, GgufInsights} from "node-llama-cpp";
+import {createElectronSideBirpc} from "../utils/createElectronSideBirpc.ts";
 import {llmFunctions, llmState, defaultModelsDirectory} from "../state/llmState.ts";
 import type {RenderedFunctions} from "../../src/rpc/llmRpc.ts";
+
+export type ModelResourcesInfo = {
+    modelRamRequired: number;
+    systemRamTotal: number;
+    systemRamFree: number;
+    modelSize: number;
+    hasEnoughRam: boolean;
+};
 
 export class ElectronLlmRpc {
     public readonly rendererLlmRpc: ReturnType<
@@ -85,6 +95,22 @@ export class ElectronLlmRpc {
         prompt: llmFunctions.chatSession.prompt,
         stopActivePrompt: llmFunctions.chatSession.stopActivePrompt,
         resetChatHistory: llmFunctions.chatSession.resetChatHistory,
+        async checkModelResources(modelUri: string): Promise<ModelResourcesInfo> {
+            const systemRamTotal = os.totalmem();
+            const systemRamFree = os.freemem();
+
+            const ggufFileInfo = await readGgufFileInfo(modelUri);
+            const insights = await GgufInsights.from(ggufFileInfo);
+            const {cpuRam: modelRamRequired} = await insights.estimateModelResourceRequirementsV2({gpuLayers: 0});
+
+            return {
+                modelRamRequired,
+                systemRamTotal,
+                systemRamFree,
+                modelSize: insights.modelSize,
+                hasEnoughRam: systemRamFree >= modelRamRequired,
+            };
+        },
     } as const;
 
     public constructor(window: BrowserWindow) {

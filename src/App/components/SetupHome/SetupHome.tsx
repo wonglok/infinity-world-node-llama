@@ -5,6 +5,7 @@ import {llmState} from "../../../state/llmState.ts";
 import {useExternalState} from "../../../hooks/useExternalState.ts";
 import {DownloadIconSVG} from "../../../icons/DownloadIconSVG.tsx";
 import {LoadFileIconSVG} from "../../../icons/LoadFileIconSVG.tsx";
+import {ModelRamChecker} from "./components/ModelRamChecker.tsx";
 
 const LAST_MODEL_KEY = "last-selected-model-uri";
 
@@ -205,6 +206,7 @@ export function SetupHome() {
                                             {isLastClicked && !isDownloading && (
                                                 <span className="text-[10px] text-purple-400 font-medium">Last used</span>
                                             )}
+                                            <ModelRamChecker modelUri={v.uri} />
                                         </div>
                                     );
                                 })}

@@ -6,6 +6,11 @@ console.log('loaded: notarize')
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const handlerNota = async function ({ appPath = '' }) {
+  /*
+APPLE_KEYCHAIN=login APPLE_KEYCHAIN_PROFILE=WONG_LOK_PROFILE 
+APPLE_KEYCHAIN=login APPLE_KEYCHAIN_PROFILE=WONG_LOK_PROFILE 
+        */
+
   // context: any
   console.log('notarize: start')
   await notarize({

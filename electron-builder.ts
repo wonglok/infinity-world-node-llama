@@ -5,7 +5,7 @@ import { handlerNota } from "./scripts/nota.mjs";
 
 const appId = "infinity-ai.wonglok.com";
 const productName = "infinity-ai world";
-const executableName = "infinity-ai-electron";
+const executableName = "infinity-ai-world";
 const appxIdentityName = "infinity-ai.wonglok.com";
 
 /**
@@ -41,10 +41,7 @@ export default {
             context.appOutDir,
             `${context.packager.appInfo.productFilename}.app`,
         );
-        /*
-APPLE_KEYCHAIN=login APPLE_KEYCHAIN_PROFILE=WONG_LOK_PROFILE 
-APPLE_KEYCHAIN=login APPLE_KEYCHAIN_PROFILE=WONG_LOK_PROFILE 
-        */
+
         await handlerNota({ appPath: appPath });
     },
     files: [

@@ -1,18 +1,18 @@
-import {useCallback, useLayoutEffect, useRef} from "react";
-import {useNavigate} from "react-router-dom";
-import {llmState} from "../state/llmState.ts";
-import {electronLlmRpc} from "../rpc/llmRpc.ts";
-import {useExternalState} from "../hooks/useExternalState.ts";
-import {Header} from "./components/Header/Header.tsx";
-import {ChatHistory} from "./components/ChatHistory/ChatHistory.tsx";
-import {InputRow} from "./components/InputRow/InputRow.tsx";
+import { useCallback, useLayoutEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { llmState } from "../state/llmState.ts";
+import { electronLlmRpc } from "../rpc/llmRpc.ts";
+import { useExternalState } from "../hooks/useExternalState.ts";
+import { Header } from "./components/Header/Header.tsx";
+import { ChatHistory } from "./components/ChatHistory/ChatHistory.tsx";
+import { InputRow } from "./components/InputRow/InputRow.tsx";
 
 import "./App.css";
 
 export function App() {
     const state = useExternalState(llmState);
     const navigate = useNavigate();
-    const {generatingResult} = state.chatSession;
+    const { generatingResult } = state.chatSession;
     const isScrollAnchoredRef = useRef(false);
     const lastAnchorScrollTopRef = useRef<number>(0);
 
@@ -122,7 +122,7 @@ export function App() {
         state.chatSession.simplifiedChat.length === 0;
 
     return (
-        <div className="app">
+        <div className="app p-5">
             <Header
                 appVersion={state.appVersion}
                 canShowCurrentVersion={state.selectedModelFilePath == null}
@@ -141,7 +141,8 @@ export function App() {
                         state.llama.error != null) && (
                         <div className="loadModel">
                             <div className="hint">
-                                No model loaded. Go to setup to choose and download a model.
+                                No model loaded. Go to setup to choose and
+                                download a model.
                             </div>
                             <button
                                 className="inline-flex items-center gap-2 rounded-lg border border-[var(--button-hover-border-color)] bg-[var(--button-background-color)] px-4 py-2 text-sm font-medium transition-colors hover:border-[var(--link-color)]"

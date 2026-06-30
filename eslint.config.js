@@ -4,9 +4,9 @@ import importPlugin from "eslint-plugin-import";
 import jsdoc from "eslint-plugin-jsdoc";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
-import stylistic from "@stylistic/eslint-plugin";
+// import stylistic from "@stylistic/eslint-plugin";
 import pluginReactHooks from "eslint-plugin-react-hooks";
-import {defineConfig} from "eslint/config";
+import { defineConfig } from "eslint/config";
 
 
 export default defineConfig({
@@ -14,7 +14,7 @@ export default defineConfig({
 }, {
     files: ["**/**.{,c,m}{js,ts}{,x}"],
     extends: [
-        stylistic.configs["recommended"],
+        // stylistic.configs["recommended"],
         jsdoc.configs["flat/recommended"],
         importPlugin.flatConfigs.recommended
     ],
@@ -55,7 +55,7 @@ export default defineConfig({
         "@stylistic/indent-binary-ops": ["off"],
         "@stylistic/eqeqeq": ["off"],
         "@stylistic/no-undef": "off",
-        "@stylistic/quotes": ["warn", "double", {avoidEscape: true}],
+        "@stylistic/quotes": ["warn", "double", { avoidEscape: true }],
         "no-unused-vars": ["warn", {
             args: "none",
             ignoreRestSiblings: true,
@@ -121,8 +121,8 @@ export default defineConfig({
         "@stylistic/multiline-ternary": ["off"],
         "@stylistic/lines-between-class-members": ["warn", {
             enforce: [
-                {blankLine: "always", prev: "method", next: "*"},
-                {blankLine: "always", prev: "*", next: "method"}
+                { blankLine: "always", prev: "method", next: "*" },
+                { blankLine: "always", prev: "*", next: "method" }
             ]
         }],
         "@stylistic/no-trailing-spaces": ["off"],

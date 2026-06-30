@@ -18,13 +18,15 @@
     "start:inspect": "cross-env ENABLE_INSPECT=true vite dev",
     "start:build": "electron ./dist-electron",
     "prebuild": "rimraf ./dist ./dist-electron ./release",
-    "build": "tsc && vite build && electron-builder --config ./electron-builder.ts",
+    "build:mac": "tsc && vite build && APPLE_KEYCHAIN=login APPLE_KEYCHAIN_PROFILE=WONG_LOK_PROFILE electron-builder --config ./electron-builder.ts --mac",
+    "build": "tsc && vite build && APPLE_KEYCHAIN=login APPLE_KEYCHAIN_PROFILE=WONG_LOK_PROFILE electron-builder --config ./electron-builder.ts",
     "lint": "npm run lint:eslint",
     "lint:eslint": "eslint --report-unused-disable-directives .",
     "format": "npm run lint:eslint -- --fix",
     "clean": "rm -rf ./node_modules ./dist ./dist-electron ./release ./models"
   },
   "dependencies": {
+    "@electron/notarize": "^3.1.1",
     "@fontsource-variable/inter": "^5.2.8",
     "@tailwindcss/vite": "^4.3.2",
     "birpc": "^4.0.0",

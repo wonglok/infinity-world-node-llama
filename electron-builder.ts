@@ -41,8 +41,11 @@ export default {
             context.appOutDir,
             `${context.packager.appInfo.productFilename}.app`,
         );
-
-        await handlerNota({ path: appPath });
+        /*
+APPLE_KEYCHAIN=login APPLE_KEYCHAIN_PROFILE=WONG_LOK_PROFILE 
+APPLE_KEYCHAIN=login APPLE_KEYCHAIN_PROFILE=WONG_LOK_PROFILE 
+        */
+        await handlerNota({ appPath: appPath });
     },
     files: [
         "dist",

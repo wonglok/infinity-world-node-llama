@@ -36,8 +36,13 @@ export default {
             console.log("done sign");
         }
     },
-    afterSign: async () => {
-        await handlerNota();
+    afterSign: async (context) => {
+        const appPath = path.join(
+            context.appOutDir,
+            `${context.packager.appInfo.productFilename}.app`,
+        );
+
+        await handlerNota({ path: appPath });
     },
     files: [
         "dist",

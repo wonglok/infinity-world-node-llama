@@ -5,11 +5,11 @@ import path from 'path'
 console.log('loaded: notarize')
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const handlerNota = async function () {
+export const handlerNota = async function ({ path = '' }) {
   // context: any
   console.log('notarize: start')
   await notarize({
-    appPath: path.join(import.meta.dirname, '../dist/mac-arm64/hyperegg-ai.app'),
+    appPath: appPath || path.join(import.meta.dirname, '../dist/mac-arm64/hyperegg-ai.app'),
     keychainProfile: 'WONG_LOK_PROFILE'
 
     // add to bashrc or zshrc:

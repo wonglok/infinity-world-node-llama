@@ -1,4 +1,5 @@
 import path from "node:path";
+import { app } from "electron";
 import {
     getLlama,
     Llama,
@@ -8,14 +9,22 @@ import {
     LlamaContextSequence,
     LlamaModel,
     isChatModelResponseSegment,
+    resolveModelFile,
     type ChatModelSegmentType,
 } from "node-llama-cpp";
 import { withLock, State } from "lifecycle-utils";
 import packageJson from "../../package.json";
 import { modelFunctions } from "../llm/modelFunctions.js";
 
+const defaultModelsDirectory = path.join(
+    app.getPath("appData"),
+    "infinity-world",
+    "models",
+);
+
 export const llmState = new State<LlmState>({
     appVersion: packageJson.version,
+    modelsDirectory: defaultModelsDirectory,
     llama: {
         loaded: false,
     },
@@ -37,10 +46,14 @@ export const llmState = new State<LlmState>({
             completion: "",
         },
     },
+    modelDownload: {
+        downloading: false,
+    },
 });
 
 export type LlmState = {
     appVersion?: string;
+    modelsDirectory?: string;
     llama: {
         loaded: boolean;
         error?: string;
@@ -68,6 +81,14 @@ export type LlmState = {
             prompt: string;
             completion: string;
         };
+    };
+    modelDownload: {
+        downloading: boolean;
+        modelUri?: string;
+        modelName?: string;
+        totalSize?: number;
+        downloadedSize?: number;
+        error?: string;
     };
 };
 
@@ -107,6 +128,76 @@ let promptAbortController: AbortController | null = null;
 let inProgressResponse: SimplifiedModelChatItem["message"] = [];
 
 export const llmFunctions = {
+    async pullModel(modelUri: string) {
+        await withLock([llmFunctions, "modelDownload"], async () => {
+            try {
+                const modelName =
+                    modelUri.split(":")[1]?.split("/")[1] ?? "model";
+
+                llmState.state = {
+                    ...llmState.state,
+                    modelDownload: {
+                        downloading: true,
+                        modelUri,
+                        modelName,
+                        totalSize: 0,
+                        downloadedSize: 0,
+                    },
+                };
+
+                const modelPath = await resolveModelFile(modelUri, {
+                    directory:
+                        llmState.state.modelsDirectory ??
+                        defaultModelsDirectory,
+                    onProgress({ totalSize, downloadedSize }) {
+                        llmState.state = {
+                            ...llmState.state,
+                            modelDownload: {
+                                ...llmState.state.modelDownload,
+                                totalSize,
+                                downloadedSize,
+                            },
+                        };
+                    },
+                });
+
+                llmState.state = {
+                    ...llmState.state,
+                    selectedModelFilePath: path.resolve(modelPath),
+                    modelDownload: {
+                        downloading: false,
+                    },
+                    chatSession: {
+                        loaded: false,
+                        generatingResult: false,
+                        simplifiedChat: [],
+                        draftPrompt: {
+                            prompt: llmState.state.chatSession.draftPrompt
+                                .prompt,
+                            completion: "",
+                        },
+                    },
+                };
+
+                if (!llmState.state.llama.loaded)
+                    await llmFunctions.loadLlama();
+
+                await llmFunctions.loadModel(modelPath);
+                await llmFunctions.createContext();
+                await llmFunctions.createContextSequence();
+                await llmFunctions.chatSession.createChatSession();
+            } catch (err) {
+                console.error("Failed to pull model", err);
+                llmState.state = {
+                    ...llmState.state,
+                    modelDownload: {
+                        downloading: false,
+                        error: String(err),
+                    },
+                };
+            }
+        });
+    },
     async loadLlama() {
         await withLock([llmFunctions, "llama"], async () => {
             if (llama != null) {

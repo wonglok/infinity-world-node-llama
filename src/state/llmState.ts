@@ -4,6 +4,7 @@ import {LlmState} from "../../electron/state/llmState.ts";
 
 export const llmState = new State<LlmState>({
     appVersion: undefined,
+    modelsDirectory: undefined,
     llama: {
         loaded: false
     },
@@ -24,5 +25,8 @@ export const llmState = new State<LlmState>({
             prompt: "",
             completion: ""
         }
+    },
+    modelDownload: {
+        downloading: false
     }
 });

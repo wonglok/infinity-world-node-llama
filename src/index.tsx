@@ -1,13 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "@fontsource-variable/inter/opsz-italic.css";
-import {App} from "./App/App.tsx";
+import {AppRouter} from "./Router/router.tsx";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>
+    <AppRouter />
 );
 
 // Use contextBridge

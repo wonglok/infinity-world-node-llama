@@ -1,10 +1,12 @@
-import {useCallback} from "react";
+import {useCallback, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {electronLlmRpc} from "../../../rpc/llmRpc.ts";
 import {llmState} from "../../../state/llmState.ts";
 import {useExternalState} from "../../../hooks/useExternalState.ts";
 import {DownloadIconSVG} from "../../../icons/DownloadIconSVG.tsx";
 import {LoadFileIconSVG} from "../../../icons/LoadFileIconSVG.tsx";
+
+const LAST_MODEL_KEY = "last-selected-model-uri";
 
 const models = [
     {
@@ -60,8 +62,21 @@ export function SetupHome() {
     const state = useExternalState(llmState);
     const navigate = useNavigate();
     const {modelDownload} = state;
+    const [lastClickedUri, setLastClickedUri] = useState<string | null>(() => {
+        try {
+            return localStorage.getItem(LAST_MODEL_KEY);
+        } catch {
+            return null;
+        }
+    });
 
     const downloadModel = useCallback(async (uri: string) => {
+        try {
+            localStorage.setItem(LAST_MODEL_KEY, uri);
+        } catch {
+            // ignore storage errors
+        }
+        setLastClickedUri(uri);
         await electronLlmRpc.pullModel(uri);
     }, []);
 
@@ -149,17 +164,25 @@ export function SetupHome() {
                             <h2 className="mb-1 text-lg font-semibold">{m.family}</h2>
                             <p className="mb-4 text-sm opacity-60">{m.description}</p>
                             <div className="flex flex-wrap gap-2">
-                                {m.variants.map((v) => (
-                                    <button
-                                        key={v.uri}
-                                        onClick={() => downloadModel(v.uri)}
-                                        disabled={modelDownload.downloading}
-                                        className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--actions-block-border-color)] bg-[var(--button-background-color)] px-3 py-1.5 text-xs font-medium transition-colors hover:border-[var(--link-color)] disabled:opacity-40"
-                                    >
-                                        <DownloadIconSVG className="h-3.5 w-3.5" />
-                                        {v.label}
-                                    </button>
-                                ))}
+                                {m.variants.map((v) => {
+                                    const isLastClicked = v.uri === lastClickedUri;
+                                    return (
+                                        <button
+                                            key={v.uri}
+                                            onClick={() => downloadModel(v.uri)}
+                                            disabled={modelDownload.downloading}
+                                            className={
+                                                "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors disabled:opacity-40"
+                                                + (isLastClicked
+                                                    ? " border-[var(--link-color)] bg-[var(--button-hover-border-color)]/15"
+                                                    : " border-[var(--actions-block-border-color)] bg-[var(--button-background-color)] hover:border-[var(--link-color)]")
+                                            }
+                                        >
+                                            <DownloadIconSVG className="h-3.5 w-3.5" />
+                                            {v.label}
+                                        </button>
+                                    );
+                                })}
                             </div>
                         </div>
                     ))}

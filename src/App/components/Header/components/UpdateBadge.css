@@ -17,11 +17,12 @@
 
     > .newVersion {
         background-color: var(--update-badge-background-color);
-        border: solid 1px var(--update-badge-border-color);
+        border: solid 2px var(--update-badge-border-color);
         box-shadow: var(--update-badge-box-shadow);
-        border-radius: 12px;
-        backdrop-filter: blur(8px);
-        padding: 8px 12px;
+        border-radius: 1rem;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 8px 14px;
         margin: 0px 8px;
 
         > .version {

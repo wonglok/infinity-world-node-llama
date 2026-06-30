@@ -1,5 +1,42 @@
 @import "tailwindcss";
 
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3) translateY(20px);
+    }
+    50% {
+        transform: scale(1.08) translateY(-4px);
+    }
+    70% {
+        transform: scale(0.95) translateY(2px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes floatUp {
+    0% {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
 :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
@@ -14,105 +51,111 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    --transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 :root {
-    --background-color: light-dark(#eeeeee, #242424);
-    --text-color: light-dark(#242424, #eeeeee);
+    --background-color: light-dark(#fff5ee, #2b1d16);
+    --text-color: light-dark(#3d2b1f, #f5e6dc);
 
     --button-background-color: light-dark(
-        rgba(255 255 255 / 64%),
+        rgba(255 255 255 / 70%),
         rgba(255 255 255 / 8%)
     );
-    --button-hover-border-color: light-dark(#646cff, #646cff);
+    --button-hover-border-color: light-dark(#e8833a, #ffb088);
 
-    --link-color: light-dark(#646cff, #646cff);
-    --link-hover-color: light-dark(#747bff, #535bf2);
-    --star-link-color: light-dark(#e09c1c, #eac54f);
-    --star-hover-color: light-dark(#daaa52, #c7a027);
+    --link-color: light-dark(#e8833a, #ffb088);
+    --link-hover-color: light-dark(#d45d2e, #ffc9a8);
+    --star-link-color: light-dark(#e8833a, #ffb088);
+    --star-hover-color: light-dark(#d45d2e, #ffc9a8);
 
-    --panel-background-color: light-dark(rgba(0 0 0 / 52%), rgba(0 0 0 / 48%));
-    --panel-text-color: light-dark(#ffffff, #eeeeee);
+    --panel-background-color: light-dark(
+        rgba(255 255 255 / 75%),
+        rgba(60 30 15 / 55%)
+    );
+    --panel-text-color: light-dark(#3d2b1f, #f5e6dc);
     --panel-button-background-color: light-dark(
-        rgba(0 0 0 / 24%),
-        rgba(255 255 255 / 8%)
+        rgba(255 220 200 / 40%),
+        rgba(255 255 255 / 6%)
     );
-    --panel-button-hover-border-color: light-dark(
-        var(--panel-text-color),
-        var(--button-hover-border-color)
-    );
+    --panel-button-hover-border-color: light-dark(#e8833a, #ffb088);
     --panel-progress-color: light-dark(
-        rgba(255 255 255 / 8%),
-        rgba(255 255 255 / 4%)
+        rgba(255 180 140 / 30%),
+        rgba(255 180 140 / 15%)
     );
     --panel-box-shadow:
-        0px 4px 8px 0px rgba(0 0 0 / 8%), 0px 6px 24px 0px rgba(0 0 0 / 16%);
+        0px 4px 8px 0px rgba(232 131 58 / 8%),
+        0px 6px 24px 0px rgba(232 131 58 / 12%);
 
     --error-border-color: light-dark(
-        rgba(239 83 80 / 100%),
-        rgba(239 83 80 / 100%)
+        rgba(239 120 100 / 100%),
+        rgba(239 120 100 / 80%)
     );
 
     --user-message-background-color: light-dark(
-        rgba(0 0 0 / 16%),
-        rgba(0 0 0 / 48%)
+        rgba(255 180 140 / 20%),
+        rgba(255 180 140 / 18%)
     );
-    --user-message-text-color: light-dark(#242424, var(--text-color));
+    --user-message-text-color: light-dark(#3d2b1f, var(--text-color));
 
     --actions-block-background-color: light-dark(
-        rgba(0 0 0 / 4%),
-        rgba(0 0 0 / 16%)
+        rgba(255 200 160 / 15%),
+        rgba(0 0 0 / 12%)
     );
     --actions-block-border-color: light-dark(
-        rgba(0 0 0 / 4%),
-        rgba(0 0 0 / 16%)
+        rgba(255 180 140 / 25%),
+        rgba(255 180 140 / 12%)
     );
     --actions-block-box-shadow:
-        0px 4px 8px 0px rgba(0 0 0 / 2%), 0px 6px 24px 0px rgba(0 0 0 / 8%);
+        0px 4px 8px 0px rgba(232 131 58 / 4%),
+        0px 6px 24px 0px rgba(232 131 58 / 6%);
 
     --code-block-background-color: light-dark(
-        rgba(0 0 0 / 4%),
-        rgba(0 0 0 / 16%)
+        rgba(255 200 160 / 15%),
+        rgba(0 0 0 / 12%)
     );
 
     --update-badge-background-color: light-dark(
-        rgba(0 0 0 / 4%),
-        rgba(0 0 0 / 16%)
-    );
-    --update-badge-border-color: light-dark(
-        rgba(0 0 0 / 4%),
-        rgba(0 0 0 / 16%)
-    );
-    --update-badge-box-shadow:
-        0px 4px 8px 0px rgba(0 0 0 / 2%), 0px 6px 24px 0px rgba(0 0 0 / 8%);
-
-    --message-table-outline-color: light-dark(
-        rgba(0 0 0 / 8%),
-        rgba(255 255 255 / 6%)
-    );
-    --message-table-background-color: light-dark(
-        rgba(0 0 0 / 0%),
+        rgba(255 220 200 / 40%),
         rgba(0 0 0 / 12%)
     );
+    --update-badge-border-color: light-dark(
+        rgba(255 180 140 / 30%),
+        rgba(255 180 140 / 12%)
+    );
+    --update-badge-box-shadow:
+        0px 4px 8px 0px rgba(232 131 58 / 4%),
+        0px 6px 24px 0px rgba(232 131 58 / 6%);
+
+    --message-table-outline-color: light-dark(
+        rgba(180 120 80 / 15%),
+        rgba(255 200 160 / 10%)
+    );
+    --message-table-background-color: light-dark(
+        rgba(255 220 200 / 20%),
+        rgba(0 0 0 / 8%)
+    );
     --message-table-even-background-color: light-dark(
-        rgba(0 0 0 / 4%),
-        rgba(255 255 255 / 6%)
+        rgba(255 200 160 / 20%),
+        rgba(255 200 160 / 8%)
     );
 
-    --message-hr-color: light-dark(rgba(0 0 0 / 16%), rgba(255 255 255 / 16%));
+    --message-hr-color: light-dark(
+        rgba(200 140 100 / 25%),
+        rgba(255 200 160 / 18%)
+    );
     --message-blockquote-border-color: light-dark(
-        rgba(0 0 0 / 8%),
-        rgba(255 255 255 / 8%)
+        rgba(255 150 100 / 25%),
+        rgba(255 180 140 / 15%)
     );
 
     --model-comment-block-background-color: light-dark(
-        rgba(0 0 0 / 6%),
-        rgba(0 0 0 / 24%)
+        rgba(255 200 160 / 15%),
+        rgba(0 0 0 / 16%)
     );
     --model-comment-block-button-background-color: light-dark(
-        rgba(0 0 0 / 6%),
-        rgba(0 0 0 / 24%)
+        rgba(255 200 160 / 20%),
+        rgba(0 0 0 / 16%)
     );
 }
 
@@ -122,12 +165,20 @@ body {
     min-width: 320px;
     min-height: 100vh;
     overscroll-behavior-x: none;
+    background: linear-gradient(135deg, #fff5ee, #ffe8d6, #ffdcc8, #ffecd2);
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #2b1d16, #36251c, #2e2018, #332219);
+    }
 }
 
 a {
     font-weight: 500;
     color: var(--link-color);
     text-decoration: inherit;
+    transition: color 0.25s var(--transition-easing);
 
     &:hover {
         color: var(--link-hover-color);
@@ -137,13 +188,13 @@ a {
 code {
     background-color: color-mix(in srgb, currentColor, transparent 84%);
     padding: 0.1em 0.3em;
-    border-radius: 0.4em;
+    border-radius: 0.6em;
     font-size: 1.2em;
 }
 
 button {
-    border-radius: 8px;
-    border: 1px solid transparent;
+    border-radius: 9999px;
+    border: 2px solid transparent;
     padding: 0.6em 1.2em;
     font-size: 1em;
     font-weight: 500;
@@ -151,13 +202,15 @@ button {
     background-color: var(--button-background-color);
     cursor: pointer;
     transition:
+        all 0.3s var(--transition-easing),
         border-color 0.3s var(--transition-easing),
         opacity 0.3s var(--transition-easing);
     color: var(--text-color);
     fill: var(--text-color);
+    box-shadow: 0 2px 8px rgba(232, 131, 58, 0.04);
 
     &[disabled] {
-        opacity: 0.52;
+        opacity: 0.45;
         pointer-events: none;
     }
 
@@ -165,5 +218,11 @@ button {
     &:focus,
     &:focus-visible {
         border-color: var(--button-hover-border-color);
+        transform: scale(1.04);
+        box-shadow: 0 6px 20px rgba(232, 131, 58, 0.15);
+    }
+
+    &:active {
+        transform: scale(0.96);
     }
 }

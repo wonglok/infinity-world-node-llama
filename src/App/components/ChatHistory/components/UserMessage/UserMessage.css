@@ -1,8 +1,8 @@
 .appChatHistory > .message.user {
     align-self: flex-end;
     background-color: var(--user-message-background-color);
-    padding: 8px 12px;
-    border-radius: 12px;
+    padding: 10px 16px;
+    border-radius: 1.25rem;
     margin-top: 0px;
     margin-bottom: 16px;
     margin-inline-start: 48px;
@@ -11,6 +11,7 @@
     word-break: break-word;
     max-width: calc(100% - 48px - 12px);
     box-sizing: border-box;
+    animation: floatUp 0.3s ease-out both;
 
     &:not(:first-child) {
         margin-top: 36px;

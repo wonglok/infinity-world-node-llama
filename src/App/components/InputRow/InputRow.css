@@ -15,12 +15,14 @@
         max-width: var(--app-max-width, 1280px);
         position: fixed;
         background-color: var(--panel-background-color);
-        border-radius: 12px;
-        backdrop-filter: blur(8px);
+        border-radius: 1.25rem;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         box-shadow: var(--panel-box-shadow);
         overflow: clip;
         color: var(--panel-text-color);
         z-index: 10;
+        border: 2px solid rgba(255, 180, 140, 0.2);
 
         &.disabled {
             opacity: 0.48;
@@ -106,7 +108,7 @@
                         opacity: 0.8;
                         border: solid 1px color-mix(in srgb, currentColor, transparent 64%);
                         border-bottom-width: 2px;
-                        border-radius: 8px;
+                        border-radius: 9999px;
                         padding: 0.1em 0.4em;
                         font-size: 0.8em;
                         vertical-align: top;
@@ -124,9 +126,11 @@
             justify-content: center;
             padding: 8px 12px;
             margin: 8px;
+            border-radius: 9999px;
             background-color: var(--panel-button-background-color);
             color: var(--panel-text-color);
             fill: var(--panel-text-color);
+            transition: all 0.25s var(--transition-easing);
 
             + button {
                 margin-inline-start: 0px;
@@ -136,6 +140,11 @@
             &:focus,
             &:focus-visible {
                 border-color: var(--panel-button-hover-border-color);
+                transform: scale(1.06);
+            }
+
+            &:active {
+                transform: scale(0.94);
             }
 
             > .icon {
@@ -145,7 +154,9 @@
         }
 
         > .stopGenerationButton {
-            transition: border-color 0.3s var(--transition-easing), opacity 0.3s var(--transition-easing);
+            transition:
+                border-color 0.3s var(--transition-easing),
+                opacity 0.3s var(--transition-easing);
 
             &[disabled] {
                 opacity: 0;

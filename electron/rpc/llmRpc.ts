@@ -1,11 +1,15 @@
 import path from "node:path";
 import os from "node:os";
 import fs from "node:fs/promises";
-import {BrowserWindow, dialog} from "electron";
-import {readGgufFileInfo, GgufInsights} from "node-llama-cpp";
-import {createElectronSideBirpc} from "../utils/createElectronSideBirpc.ts";
-import {llmFunctions, llmState, defaultModelsDirectory} from "../state/llmState.ts";
-import type {RenderedFunctions} from "../../src/rpc/llmRpc.ts";
+import { BrowserWindow, dialog } from "electron";
+import { readGgufFileInfo, GgufInsights } from "node-llama-cpp";
+import { createElectronSideBirpc } from "../utils/createElectronSideBirpc.ts";
+import {
+    llmFunctions,
+    llmState,
+    defaultModelsDirectory,
+} from "../state/llmState.ts";
+import type { RenderedFunctions } from "../../src/rpc/llmRpc.ts";
 
 export type ModelResourcesInfo = {
     modelRamRequired: number;
@@ -53,9 +57,11 @@ export class ElectronLlmRpc {
             const res = await dialog.showOpenDialog({
                 message: "Select a model file",
                 title: "Select a model file",
-                filters: [{name: "Model file", extensions: ["gguf"]}],
+                filters: [{ name: "Model file", extensions: ["gguf"] }],
                 buttonLabel: "Open",
-                defaultPath: (await pathExists(llmState.state.modelsDirectory ?? ""))
+                defaultPath: (await pathExists(
+                    llmState.state.modelsDirectory ?? "",
+                ))
                     ? llmState.state.modelsDirectory
                     : undefined,
                 properties: ["openFile"],
@@ -95,13 +101,18 @@ export class ElectronLlmRpc {
         prompt: llmFunctions.chatSession.prompt,
         stopActivePrompt: llmFunctions.chatSession.stopActivePrompt,
         resetChatHistory: llmFunctions.chatSession.resetChatHistory,
-        async checkModelResources(modelUri: string): Promise<ModelResourcesInfo> {
+        async checkModelResources(
+            modelUri: string,
+        ): Promise<ModelResourcesInfo> {
             const systemRamTotal = os.totalmem();
             const systemRamFree = os.freemem();
 
             const ggufFileInfo = await readGgufFileInfo(modelUri);
             const insights = await GgufInsights.from(ggufFileInfo);
-            const {cpuRam: modelRamRequired} = await insights.estimateModelResourceRequirementsV2({gpuLayers: 0});
+            const { cpuRam: modelRamRequired } =
+                await insights.estimateModelResourceRequirementsV2({
+                    gpuLayers: 0,
+                });
 
             return {
                 modelRamRequired,

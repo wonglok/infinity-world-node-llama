@@ -1,60 +1,118 @@
-import {useCallback, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {electronLlmRpc} from "../../../rpc/llmRpc.ts";
-import {llmState} from "../../../state/llmState.ts";
-import {useExternalState} from "../../../hooks/useExternalState.ts";
-import {DownloadIconSVG} from "../../../icons/DownloadIconSVG.tsx";
-import {LoadFileIconSVG} from "../../../icons/LoadFileIconSVG.tsx";
-import {ModelRamChecker} from "./components/ModelRamChecker.tsx";
+import { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { electronLlmRpc } from "../../../rpc/llmRpc.ts";
+import { llmState } from "../../../state/llmState.ts";
+import { useExternalState } from "../../../hooks/useExternalState.ts";
+import { DownloadIconSVG } from "../../../icons/DownloadIconSVG.tsx";
+import { LoadFileIconSVG } from "../../../icons/LoadFileIconSVG.tsx";
+import { ModelRamChecker } from "./components/ModelRamChecker.tsx";
+
+import "./SetupHome.css";
 
 const LAST_MODEL_KEY = "last-selected-model-uri";
 
 const models = [
     {
         family: "Gemma 4 5B E2B",
-        description: "Lightweight 5B-parameter model with 2B expert. Best for low-resource machines.",
+        description:
+            "Tiny but mighty — perfect for laptops with limited RAM. Great for quick chats and lightweight tasks.",
         variants: [
-            {label: "Q8_0 — 5.0GB", uri: "hf:giladgd/gemma-4-E2B-it-GGUF:Q8_0"},
-            {label: "Q6_K — 3.9GB", uri: "hf:giladgd/gemma-4-E2B-it-GGUF:Q6_K"},
+            {
+                label: "Q8_0 · 5.0GB",
+                uri: "hf:giladgd/gemma-4-E2B-it-GGUF:Q8_0",
+            },
+            {
+                label: "Q6_K · 3.9GB",
+                uri: "hf:giladgd/gemma-4-E2B-it-GGUF:Q6_K",
+            },
         ],
     },
     {
         family: "Gemma 4 8B E4B",
-        description: "8B-parameter model with 4B expert. Great balance of quality and speed.",
+        description:
+            "The sweet spot — excellent quality and speed. Our most popular pick for everyday use.",
         variants: [
-            {label: "Q8_0 — 8.1GB", uri: "hf:giladgd/gemma-4-E4B-it-GGUF:Q8_0"},
-            {label: "Q6_K — 6.3GB", uri: "hf:giladgd/gemma-4-E4B-it-GGUF:Q6_K"},
-            {label: "Q4_K_M — 5.4GB", uri: "hf:giladgd/gemma-4-E4B-it-GGUF:Q4_K_M"},
+            {
+                label: "Q8_0 · 8.1GB",
+                uri: "hf:giladgd/gemma-4-E4B-it-GGUF:Q8_0",
+            },
+            {
+                label: "Q6_K · 6.3GB",
+                uri: "hf:giladgd/gemma-4-E4B-it-GGUF:Q6_K",
+            },
+            {
+                label: "Q4_K_M · 5.4GB",
+                uri: "hf:giladgd/gemma-4-E4B-it-GGUF:Q4_K_M",
+            },
         ],
     },
     {
         family: "Gemma 4 12B",
-        description: "12B-parameter dense model. Strong reasoning and instruction following.",
+        description:
+            "Serious reasoning power. Strong instruction following for more demanding conversations.",
         variants: [
-            {label: "Q8_0 — 12.7GB", uri: "hf:giladgd/gemma-4-12B-it-GGUF:Q8_0"},
-            {label: "Q6_K — 9.8GB", uri: "hf:giladgd/gemma-4-12B-it-GGUF:Q6_K"},
-            {label: "Q5_K_M — 8.5GB", uri: "hf:giladgd/gemma-4-12B-it-GGUF:Q5_K_M"},
-            {label: "Q4_K_M — 7.4GB", uri: "hf:giladgd/gemma-4-12B-it-GGUF:Q4_K_M"},
+            {
+                label: "Q8_0 · 12.7GB",
+                uri: "hf:giladgd/gemma-4-12B-it-GGUF:Q8_0",
+            },
+            {
+                label: "Q6_K · 9.8GB",
+                uri: "hf:giladgd/gemma-4-12B-it-GGUF:Q6_K",
+            },
+            {
+                label: "Q5_K_M · 8.5GB",
+                uri: "hf:giladgd/gemma-4-12B-it-GGUF:Q5_K_M",
+            },
+            {
+                label: "Q4_K_M · 7.4GB",
+                uri: "hf:giladgd/gemma-4-12B-it-GGUF:Q4_K_M",
+            },
         ],
     },
     {
         family: "Gemma 4 26B A4B MoE",
-        description: "26B-parameter Mixture-of-Experts with 4B active. High quality with efficient inference.",
+        description:
+            "Mixture-of-Experts powerhouse — 26B parameters, 4B active. High quality, surprising efficiency.",
         variants: [
-            {label: "Q8_0 — 26.9GB", uri: "hf:giladgd/gemma-4-26B-A4B-it-GGUF:Q8_0"},
-            {label: "Q6_K — 22.6GB", uri: "hf:giladgd/gemma-4-26B-A4B-it-GGUF:Q6_K"},
-            {label: "Q5_K_M — 19.1GB", uri: "hf:giladgd/gemma-4-26B-A4B-it-GGUF:Q5_K_M"},
-            {label: "Q4_K_M — 16.8GB", uri: "hf:giladgd/gemma-4-26B-A4B-it-GGUF:Q4_K_M"},
+            {
+                label: "Q8_0 · 26.9GB",
+                uri: "hf:giladgd/gemma-4-26B-A4B-it-GGUF:Q8_0",
+            },
+            {
+                label: "Q6_K · 22.6GB",
+                uri: "hf:giladgd/gemma-4-26B-A4B-it-GGUF:Q6_K",
+            },
+            {
+                label: "Q5_K_M · 19.1GB",
+                uri: "hf:giladgd/gemma-4-26B-A4B-it-GGUF:Q5_K_M",
+            },
+            {
+                label: "Q4_K_M · 16.8GB",
+                uri: "hf:giladgd/gemma-4-26B-A4B-it-GGUF:Q4_K_M",
+            },
         ],
     },
     {
         family: "Gemma 4 31B",
-        description: "31B-parameter dense model. Maximum quality for high-end machines.",
+        description:
+            "The big one — maximum quality for desktop workstations. Uncompromising performance.",
         variants: [
-            {label: "Q8_0 — 32.6GB", uri: "hf:giladgd/gemma-4-31B-it-GGUF:Q8_0"},
-            {label: "Q6_K — 25.2GB", uri: "hf:giladgd/gemma-4-31B-it-GGUF:Q6_K"},
-            {label: "Q5_K_M — 21.8GB", uri: "hf:giladgd/gemma-4-31B-it-GGUF:Q5_K_M"},
-            {label: "Q4_K_M — 18.7GB", uri: "hf:giladgd/gemma-4-31B-it-GGUF:Q4_K_M"},
+            {
+                label: "Q8_0 · 32.6GB",
+                uri: "hf:giladgd/gemma-4-31B-it-GGUF:Q8_0",
+            },
+            {
+                label: "Q6_K · 25.2GB",
+                uri: "hf:giladgd/gemma-4-31B-it-GGUF:Q6_K",
+            },
+            {
+                label: "Q5_K_M · 21.8GB",
+                uri: "hf:giladgd/gemma-4-31B-it-GGUF:Q5_K_M",
+            },
+            {
+                label: "Q4_K_M · 18.7GB",
+                uri: "hf:giladgd/gemma-4-31B-it-GGUF:Q4_K_M",
+            },
         ],
     },
 ];
@@ -62,7 +120,7 @@ const models = [
 export function SetupHome() {
     const state = useExternalState(llmState);
     const navigate = useNavigate();
-    const {modelDownload} = state;
+    const { modelDownload } = state;
     const [lastClickedUri, setLastClickedUri] = useState<string | null>(() => {
         try {
             return localStorage.getItem(LAST_MODEL_KEY);
@@ -96,117 +154,167 @@ export function SetupHome() {
     const displayDirectory = state.modelsDirectory ?? "Loading…";
 
     // Navigate to chat once a model is loaded
-    if (state.model.loaded && state.contextSequence.loaded && state.chatSession.loaded) {
-        navigate("/chat", {replace: true});
+    if (
+        state.model.loaded &&
+        state.contextSequence.loaded &&
+        state.chatSession.loaded
+    ) {
+        navigate("/chat", { replace: true });
     }
 
-    const progress = modelDownload.totalSize != null && modelDownload.totalSize > 0
-        ? Math.round((modelDownload.downloadedSize ?? 0) / modelDownload.totalSize * 100)
-        : 0;
+    const progress =
+        modelDownload.totalSize != null && modelDownload.totalSize > 0
+            ? Math.round(
+                  ((modelDownload.downloadedSize ?? 0) /
+                      modelDownload.totalSize) *
+                      100,
+              )
+            : 0;
 
     return (
-        <div className="min-h-screen bg-[var(--background-color)] text-[var(--text-color)]">
-            <div className="mx-auto max-w-3xl px-6 py-12">
-                <h1 className="mb-2 text-3xl font-bold tracking-tight">Welcome to Infinity World</h1>
-                <p className="mb-8 text-base opacity-70">
-                    Choose a Gemma 4 model to download and start chatting. Models are downloaded once and cached locally.
+        <div className="setup-home w-full">
+            <div className="mx-auto max-w-2xl px-6 py-14">
+                <h1 className="hero-title mb-3">Welcome to Infinity World</h1>
+                <p className="hero-subtitle mb-10 text-base">
+                    Pick a model, download it once, and start chatting.
+                    Everything runs locally on your machine.
                 </p>
 
                 {modelDownload.downloading && (
-                    <div className="mb-8 rounded-xl border border-[var(--button-hover-border-color)] bg-[var(--panel-background-color)] p-6">
-                        <div className="mb-2 text-sm font-medium">
-                            Downloading {modelDownload.modelName}…
+                    <div className="card-orange mb-8 p-6 animate-in">
+                        <div className="mb-2 text-sm font-semibold text-[#6B4226]">
+                            Downloading {modelDownload.modelName}&hellip;
                         </div>
-                        <div className="mb-2 h-2.5 w-full overflow-hidden rounded-full bg-[var(--panel-progress-color)]">
+                        <div className="progress-bar-track mb-2">
                             <div
-                                className="h-full rounded-full bg-[var(--button-hover-border-color)] transition-all duration-300"
-                                style={{width: `${progress}%`}}
+                                className="progress-bar-fill"
+                                style={{ width: `${progress}%` }}
                             />
                         </div>
-                        <div className="text-xs opacity-60">
+                        <div className="text-xs opacity-50 text-[#5C3D2E]">
                             {modelDownload.totalSize != null
                                 ? `${(modelDownload.downloadedSize! / 1e9).toFixed(1)} GB / ${(modelDownload.totalSize / 1e9).toFixed(1)} GB (${progress}%)`
-                                : "Connecting…"}
+                                : "Connecting to Hugging Face…"}
                         </div>
                     </div>
                 )}
 
                 {modelDownload.error != null && (
-                    <div className="mb-8 rounded-xl border border-[var(--error-border-color)] bg-[var(--panel-background-color)] p-4 text-sm">
-                        Failed to download: {modelDownload.error}
+                    <div className="error-card mb-8 p-4 text-sm font-medium animate-in">
+                        Something went wrong: {modelDownload.error}
                     </div>
                 )}
 
-                <div className="mb-6 rounded-xl border border-[var(--actions-block-border-color)] bg-[var(--actions-block-background-color)] p-4">
-                    <div className="mb-1 text-sm font-medium">Models storage directory</div>
-                    <div className="mb-3 text-xs opacity-50 break-all font-mono">{displayDirectory}</div>
-                    <div className="flex gap-2">
+                <div className="card-orange mb-6 p-5 animate-in">
+                    <div className="mb-1 text-sm font-semibold text-[#6B4226]">
+                        Storage folder
+                    </div>
+                    <div className="dir-path mb-3">{displayDirectory}</div>
+                    <div className="flex gap-2.5">
                         <button
                             onClick={selectDirectory}
                             disabled={modelDownload.downloading}
-                            className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--actions-block-border-color)] bg-[var(--button-background-color)] px-3 py-1.5 text-xs font-medium transition-colors hover:border-[var(--link-color)] disabled:opacity-40"
+                            className="btn-secondary"
                         >
-                            Change directory…
+                            Change folder&hellip;
                         </button>
                         <button
                             onClick={resetDirectory}
                             disabled={modelDownload.downloading}
-                            className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--actions-block-border-color)] bg-[var(--button-background-color)] px-3 py-1.5 text-xs font-medium transition-colors hover:border-[var(--link-color)] disabled:opacity-40"
+                            className="btn-secondary"
                         >
                             Reset to default
                         </button>
                     </div>
                 </div>
 
-                <div className="mb-10">
+                <div className="mb-12 animate-in">
                     <button
                         onClick={openFileDialog}
                         disabled={modelDownload.downloading}
-                        className="inline-flex items-center gap-2 rounded-lg border border-[var(--button-hover-border-color)] bg-[var(--button-background-color)] px-4 py-2 text-sm font-medium transition-colors hover:border-[var(--link-color)] disabled:opacity-40"
+                        className="btn-file"
                     >
                         <LoadFileIconSVG className="h-4 w-4" />
-                        Open local model file…
+                        Open a local model file&hellip;
                     </button>
                 </div>
 
-                <div className="space-y-6">
-                    {models.map((m) => (
+                <div className="space-y-4">
+                    {models.map((m, i) => (
                         <div
                             key={m.family}
-                            className="rounded-xl border border-[var(--actions-block-border-color)] bg-[var(--actions-block-background-color)] p-5"
+                            className={
+                                "model-card animate-in stagger-" + (i + 1)
+                            }
                         >
-                            <h2 className="mb-1 text-lg font-semibold">{m.family}</h2>
-                            <p className="mb-4 text-sm opacity-60">{m.description}</p>
+                            <h2 className="mb-1 text-base font-bold text-[#E8833A]">
+                                {m.family}
+                            </h2>
+                            <p className="mb-3 text-xs leading-relaxed opacity-50 text-[#5C3D2E]">
+                                {m.description}
+                            </p>
                             <div className="flex flex-wrap gap-2">
                                 {m.variants.map((v) => {
-                                    const isLastClicked = v.uri === lastClickedUri;
-                                    const isDownloading = modelDownload.downloading && modelDownload.modelUri === v.uri;
+                                    const isLastClicked =
+                                        v.uri === lastClickedUri;
+                                    const isDownloading =
+                                        modelDownload.downloading &&
+                                        modelDownload.modelUri === v.uri;
                                     return (
-                                        <div key={v.uri} className="inline-flex flex-col items-center gap-0.5">
+                                        <div
+                                            key={v.uri}
+                                            className="inline-flex flex-col items-center gap-1"
+                                        >
                                             <button
-                                                onClick={() => downloadModel(v.uri)}
-                                                disabled={modelDownload.downloading}
+                                                onClick={() =>
+                                                    downloadModel(v.uri)
+                                                }
+                                                disabled={
+                                                    modelDownload.downloading
+                                                }
                                                 className={
-                                                    "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors disabled:opacity-40"
-                                                    + (isLastClicked
-                                                        ? " border-purple-500 bg-purple-500/10 hover:border-purple-700"
-                                                        : " border-black bg-[var(--button-background-color)] hover:border-zinc-600")
+                                                    "btn-download" +
+                                                    (isLastClicked
+                                                        ? " last-used"
+                                                        : "")
                                                 }
                                             >
                                                 {isDownloading ? (
-                                                    <svg className="h-3.5 w-3.5 animate-spin" viewBox="0 0 24 24" fill="none">
-                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                                                    <svg
+                                                        className="h-3.5 w-3.5 animate-spin"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                    >
+                                                        <circle
+                                                            className="opacity-25"
+                                                            cx="12"
+                                                            cy="12"
+                                                            r="10"
+                                                            stroke="currentColor"
+                                                            strokeWidth="4"
+                                                        />
+                                                        <path
+                                                            className="opacity-75"
+                                                            fill="currentColor"
+                                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                                                        />
                                                     </svg>
                                                 ) : (
                                                     <DownloadIconSVG className="h-3.5 w-3.5" />
                                                 )}
                                                 {v.label}
                                             </button>
-                                            {isLastClicked && !isDownloading && (
-                                                <span className="text-[10px] text-purple-400 font-medium">Last used</span>
-                                            )}
-                                            <ModelRamChecker modelUri={v.uri} />
+                                            {isLastClicked &&
+                                                !isDownloading && (
+                                                    <span className="last-used-tag">
+                                                        Last used
+                                                    </span>
+                                                )}
+                                            <div className="ram-info">
+                                                <ModelRamChecker
+                                                    modelUri={v.uri}
+                                                />
+                                            </div>
                                         </div>
                                     );
                                 })}

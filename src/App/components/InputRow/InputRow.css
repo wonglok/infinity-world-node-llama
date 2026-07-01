@@ -1,0 +1,9 @@
+.input-row.main {
+    position: fixed;
+    z-index: 10;
+}
+
+.input-row.spacer {
+    position: sticky;
+    pointer-events: none;
+}

@@ -4,11 +4,9 @@ import { ModelResponseThought } from "../ModelResponseThought/ModelResponseThoug
 import { ModelResponseComment } from "../ModelResponseComment/ModelResponseComment.js";
 import { ModelMessageCopyButton } from "./components/ModelMessageCopyButton/ModelMessageCopyButton.js";
 
-// import "./ModelMessage.css";
-
 export function ModelMessage({ modelMessage, active }: ModelMessageProps) {
     return (
-        <div className="message model">
+        <div className="self-start me-12 ps-4.5 wrap-break-word max-w-[calc(100%-48px)] box-border min-h-fit [interpolate-size:allow-keywords] transition-[min-height,max-height] duration-500 ease-(--transition-easing) last:mb-0 last:min-h-[50svh]">
             {modelMessage.message.map((message, responseIndex) => {
                 const isLastMessage =
                     responseIndex === modelMessage.message.length - 1;
@@ -38,7 +36,6 @@ export function ModelMessage({ modelMessage, active }: ModelMessageProps) {
                             />
                         );
                     else
-                        // ensure we handle all segment types or TypeScript will complain
                         void (message.segmentType satisfies never);
                 }
 
@@ -46,16 +43,19 @@ export function ModelMessage({ modelMessage, active }: ModelMessageProps) {
                     <MessageMarkdown
                         key={responseIndex}
                         activeDot={isLastMessage && active}
-                        className="text"
+                        className="px-1.5"
                     >
                         {message.text}
                     </MessageMarkdown>
                 );
             })}
             {modelMessage.message.length === 0 && active && (
-                <MessageMarkdown className="text" activeDot />
+                <MessageMarkdown className="px-1.5" activeDot />
             )}
-            <div className="buttons" inert={active}>
+            <div
+                className={`flex flex-row py-3 opacity-60 justify-self-start transition-opacity duration-100 hover:opacity-100 focus-visible:opacity-100 ${active ? "opacity-0" : ""}`}
+                {...(active ? { inert: true } : {})}
+            >
                 <ModelMessageCopyButton modelMessage={modelMessage.message} />
             </div>
         </div>

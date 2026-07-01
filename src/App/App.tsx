@@ -3,11 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { llmState } from "../state/llmState.ts";
 import { electronLlmRpc } from "../rpc/llmRpc.ts";
 import { useExternalState } from "../hooks/useExternalState.ts";
-// import { Header } from "./components/Header/Header.tsx";
 import { ChatHistory } from "./components/ChatHistory/ChatHistory.tsx";
 import { InputRow } from "./components/InputRow/InputRow.tsx";
-
-import "./App.css";
 
 export function App() {
     const state = useExternalState(llmState);
@@ -122,9 +119,9 @@ export function App() {
         state.chatSession.simplifiedChat.length === 0;
 
     return (
-        <div id="AppArea" className="app p-5">
+        <div className="mx-auto flex flex-col w-full min-h-full max-w-180 [--app-max-width:720px] relative p-5">
             <button
-                className="flex items-center space-x-3"
+                className="flex items-center gap-2"
                 onClick={() => navigate("/")}
                 title="Back to setup"
             >
@@ -137,39 +134,29 @@ export function App() {
                 </svg>
                 <span>Setup</span>
             </button>
-            {/* <div className=" flex justify-end">
-                <Header
-                    appVersion={state.appVersion}
-                    canShowCurrentVersion={state.selectedModelFilePath == null}
-                    modelName={state.model.name}
-                    loadPercentage={state.model.loadProgress}
-                    onLoadClick={openSelectModelFileDialog}
-                    onResetChatClick={
-                        !showMessage ? resetChatHistory : undefined
-                    }
-                />
-            </div> */}
 
             {showMessage && (
-                <div className="message">
+                <div className="flex-1 flex flex-col justify-evenly items-center gap-12 overflow-auto py-6">
                     {error != null && (
-                        <div className="error">{String(error)}</div>
+                        <div className="border-2 border-(--error-border-color) py-2.5 px-4 rounded-2xl shadow-[0_8px_32px_-16px_var(--error-border-color)]">
+                            {String(error)}
+                        </div>
                     )}
                     {loading && (
-                        <div className="loading">
-                            <div className="loading-spinner" />
+                        <div className="flex flex-row items-center gap-3 opacity-60 font-medium">
+                            <div className="w-5 h-5 border-2 border-(--text-color,#4a3f35) border-t-transparent rounded-full animate-[spin_0.7s_linear_infinite]" />
                             Loading AI...
                         </div>
                     )}
                     {(state.selectedModelFilePath == null ||
                         state.llama.error != null) && (
-                        <div className="loadModel">
-                            <div className="hint">
+                        <div className="flex flex-col items-center gap-16 text-start">
+                            <div className="opacity-60">
                                 No model loaded. Go to setup to choose and
                                 download a model.
                             </div>
                             <button
-                                className="inline-flex items-center gap-2 rounded-lg border border-[var(--button-hover-border-color)] bg-[var(--button-background-color)] px-4 py-2 text-sm font-medium transition-colors hover:border-[var(--link-color)]"
+                                className="inline-flex items-center gap-2 rounded-lg border border-(--button-hover-border-color) bg-(--button-background-color) px-4 py-2 text-sm font-medium transition-colors hover:border-(--link-color)"
                                 onClick={() => navigate("/")}
                             >
                                 Back to Setup
@@ -180,7 +167,7 @@ export function App() {
                         state.selectedModelFilePath != null &&
                         error == null &&
                         state.chatSession.simplifiedChat.length === 0 && (
-                            <div className="typeMessage">
+                            <div className="typeMessage opacity-60 bg-[rgba(255,255,255,0.45)] border border-[rgba(200,170,120,0.25)] rounded-[9999px] py-2.5 px-6 text-sm shadow-[0_2px_12px_rgba(180,160,140,0.08),inset_0_0_0_1px_rgba(255,255,255,0.2)]">
                                 Type a message to start the conversation
                             </div>
                         )}
@@ -188,7 +175,7 @@ export function App() {
             )}
             {!showMessage && (
                 <ChatHistory
-                    className="chatHistory"
+                    className="mb-8"
                     simplifiedChat={state.chatSession.simplifiedChat}
                     generatingResult={generatingResult}
                 />

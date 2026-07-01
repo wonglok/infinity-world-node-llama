@@ -104,9 +104,10 @@
                         display: inline-block;
                         margin: -1px 8px;
                         opacity: 0.8;
-                        border: solid 1px color-mix(in srgb, currentColor, transparent 64%);
+                        border: solid 1px
+                            color-mix(in srgb, currentColor, transparent 64%);
                         border-bottom-width: 2px;
-                        border-radius: 9999px;
+                        border-radius: 10px;
                         padding: 0.1em 0.4em;
                         font-size: 0.8em;
                         vertical-align: top;
@@ -124,7 +125,7 @@
             justify-content: center;
             padding: 8px 12px;
             margin: 8px;
-            border-radius: 9999px;
+            border-radius: 10px;
             background-color: var(--panel-button-background-color);
             color: var(--panel-text-color);
             fill: var(--panel-text-color);

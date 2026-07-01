@@ -92,7 +92,7 @@
 }
 
 .setup-home .hero-title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: "Playfair Display", Georgia, serif;
     font-size: 2.5rem;
     font-weight: 400;
     letter-spacing: 0.02em;
@@ -103,7 +103,7 @@
 
 .setup-home .hero-subtitle {
     opacity: 0.55;
-    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-family: "Cormorant Garamond", Georgia, serif;
     font-size: 1.05rem;
     letter-spacing: 0.03em;
     color: #8a7b6e;
@@ -155,7 +155,7 @@
 
 .setup-home .model-section__title {
     margin-bottom: 0.25rem;
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: "Playfair Display", Georgia, serif;
     font-size: 1.05rem;
     font-weight: 400;
     letter-spacing: 0.02em;
@@ -164,7 +164,7 @@
 
 .setup-home .model-section__desc {
     margin-bottom: 1rem;
-    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-family: "Cormorant Garamond", Georgia, serif;
     font-size: 0.8rem;
     line-height: 1.5;
     color: #8a7b6e;
@@ -255,7 +255,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    border-radius: 9999px;
+    border-radius: 10px;
     padding: 0.45rem 1rem;
     font-size: 0.8rem;
     font-weight: 600;
@@ -309,7 +309,7 @@
 }
 
 .setup-home .btn-secondary {
-    border-radius: 9999px;
+    border-radius: 10px;
     padding: 0.45rem 1rem;
     font-size: 0.8rem;
     font-weight: 600;
@@ -347,7 +347,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    border-radius: 9999px;
+    border-radius: 10px;
     padding: 0.6rem 1.4rem;
     font-size: 0.9rem;
     font-weight: 600;
@@ -392,7 +392,7 @@
 
 .setup-home .cache-indicator {
     display: inline-block;
-    border-radius: 9999px;
+    border-radius: 10px;
     padding: 0.12rem 0.5rem;
     letter-spacing: 0.02em;
 }
@@ -414,14 +414,14 @@
 
 .setup-home .progress-bar-track {
     height: 0.7rem;
-    border-radius: 9999px;
+    border-radius: 10px;
     overflow: hidden;
     background: rgba(200, 170, 120, 0.2);
 }
 
 .setup-home .progress-bar-fill {
     height: 100%;
-    border-radius: 9999px;
+    border-radius: 10px;
     background: linear-gradient(90deg, #e8d5b0, #c9a96e, #b8944e);
     background-size: 200% 100%;
     animation: shimmer 2s linear infinite;

@@ -3,10 +3,20 @@
 
     &.active {
         &:empty:after,
-        &:not(:empty)>:last-child:not(ol, ul, table):after,
-        &:not(:empty)>:last-child:where(ol, ul)>:last-child:not(:has(>:last-child:where(ol, ul))):after,
-        &:not(:empty)>:last-child:where(ol, ul)>:last-child>:last-child:where(ol, ul)>:last-child:after,
-        &:not(:empty)>:last-child:where(table)>:last-child>:last-child>:last-child:after {
+        &:not(:empty) > :last-child:not(ol, ul, table):after,
+        &:not(:empty)
+            > :last-child:where(ol, ul)
+            > :last-child:not(:has(> :last-child:where(ol, ul))):after,
+        &:not(:empty)
+            > :last-child:where(ol, ul)
+            > :last-child
+            > :last-child:where(ol, ul)
+            > :last-child:after,
+        &:not(:empty)
+            > :last-child:where(table)
+            > :last-child
+            > :last-child
+            > :last-child:after {
             content: "";
             position: static;
             display: inline-block;
@@ -14,7 +24,7 @@
             width: 8px;
             height: 8px;
             translate: 0px -2px;
-            border-radius: 9999px;
+            border-radius: 10px;
             margin-inline-start: 8px;
             vertical-align: middle;
 

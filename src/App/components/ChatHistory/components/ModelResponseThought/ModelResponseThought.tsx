@@ -42,7 +42,7 @@ export function ModelResponseThought({
                 }
             `}</style>
             <div
-                className={`px-2 transition-[margin-bottom] duration-300 ease-(--transition-easing) ${active ? "mb-2" : ""}`}
+                className={`px-2 transition-[margin-bottom] duration-300 ease-(--transition-easing) opacity-80 ${active ? "mb-2" : ""}`}
             >
                 <button
                     className="border-none bg-transparent flex flex-col p-0 select-none outline-2 outline-transparent outline-offset-4 rounded-sm self-start max-w-full focus-visible:outline-[Highlight] cursor-pointer"

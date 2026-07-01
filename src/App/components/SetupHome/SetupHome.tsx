@@ -174,7 +174,7 @@ export function SetupHome() {
 
     return (
         <div className="setup-home w-full">
-            <div className="mx-auto max-w-2xl px-6 py-14">
+            <div className="mx-auto max-w-4xl px-6 py-14">
                 <h1 className="hero-title mb-3">Welcome to Infinity World</h1>
                 <p className="hero-subtitle mb-10 text-base">
                     Pick a model, download it once, and start chatting.
@@ -240,90 +240,118 @@ export function SetupHome() {
                     </button>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-6">
                     {models.map((m, i) => (
                         <div
                             key={m.family}
                             className={
-                                "model-card animate-in stagger-" + (i + 1)
+                                "model-section animate-in stagger-" + (i + 1)
                             }
                         >
-                            <h2 className="mb-1 text-base font-bold text-[#E8833A]">
-                                {m.family}
-                            </h2>
-                            <p className="mb-3 text-xs leading-relaxed opacity-50 text-[#5C3D2E]">
+                            <h2 className="model-section__title">{m.family}</h2>
+                            <p className="model-section__desc">
                                 {m.description}
                             </p>
-                            <div className="flex flex-wrap gap-2">
-                                {m.variants.map((v) => {
-                                    const isLastClicked =
-                                        v.uri === lastClickedUri;
-                                    const isDownloading =
-                                        modelDownload.downloading &&
-                                        modelDownload.modelUri === v.uri;
-                                    return (
-                                        <div
-                                            key={v.uri}
-                                            className="inline-flex flex-col items-center gap-1"
-                                        >
-                                            <button
-                                                onClick={() =>
-                                                    downloadModel(v.uri)
-                                                }
-                                                disabled={
-                                                    modelDownload.downloading
-                                                }
-                                                className={
-                                                    "btn-download" +
-                                                    (isLastClicked
-                                                        ? " last-used"
-                                                        : "")
-                                                }
-                                            >
-                                                {isDownloading ? (
-                                                    <svg
-                                                        className="h-3.5 w-3.5 animate-spin"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                    >
-                                                        <circle
-                                                            className="opacity-25"
-                                                            cx="12"
-                                                            cy="12"
-                                                            r="10"
-                                                            stroke="currentColor"
-                                                            strokeWidth="4"
+                            <div className="model-table-wrapper">
+                                <table className="model-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Quantization</th>
+                                            <th>Size</th>
+                                            <th>Cached</th>
+                                            <th>RAM</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {m.variants.map((v) => {
+                                            const [quant, size] =
+                                                v.label.split(" · ");
+                                            const isLastClicked =
+                                                v.uri === lastClickedUri;
+                                            const isDownloading =
+                                                modelDownload.downloading &&
+                                                modelDownload.modelUri ===
+                                                    v.uri;
+                                            return (
+                                                <tr
+                                                    key={v.uri}
+                                                    className={
+                                                        isDownloading
+                                                            ? "row-downloading"
+                                                            : ""
+                                                    }
+                                                >
+                                                    <td className="td-quant">
+                                                        {quant}
+                                                    </td>
+                                                    <td className="td-size">
+                                                        {size}
+                                                    </td>
+                                                    <td className="td-cached">
+                                                        <ModelCacheIndicator
+                                                            modelUri={v.uri}
                                                         />
-                                                        <path
-                                                            className="opacity-75"
-                                                            fill="currentColor"
-                                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                                                    </td>
+                                                    <td className="td-ram">
+                                                        <ModelRamChecker
+                                                            modelUri={v.uri}
                                                         />
-                                                    </svg>
-                                                ) : (
-                                                    <DownloadIconSVG className="h-3.5 w-3.5" />
-                                                )}
-                                                {v.label}
-                                            </button>
-                                            {isLastClicked &&
-                                                !isDownloading && (
-                                                    <span className="last-used-tag">
-                                                        Last used
-                                                    </span>
-                                                )}
-                                            <div className="ram-info">
-                                                <ModelRamChecker
-                                                    modelUri={v.uri}
-                                                />
-                                            </div>
-                                            <div className="cache-info">
-                                                <ModelCacheIndicator
-                                                    modelUri={v.uri}
-                                                />
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+                                                    </td>
+                                                    <td className="td-action">
+                                                        <button
+                                                            onClick={() =>
+                                                                downloadModel(
+                                                                    v.uri,
+                                                                )
+                                                            }
+                                                            disabled={
+                                                                modelDownload.downloading
+                                                            }
+                                                            className={
+                                                                "btn-download" +
+                                                                (isLastClicked
+                                                                    ? " last-used"
+                                                                    : "")
+                                                            }
+                                                        >
+                                                            {isDownloading ? (
+                                                                <svg
+                                                                    className="h-3.5 w-3.5 animate-spin"
+                                                                    viewBox="0 0 24 24"
+                                                                    fill="none"
+                                                                >
+                                                                    <circle
+                                                                        className="opacity-25"
+                                                                        cx="12"
+                                                                        cy="12"
+                                                                        r="10"
+                                                                        stroke="currentColor"
+                                                                        strokeWidth="4"
+                                                                    />
+                                                                    <path
+                                                                        className="opacity-75"
+                                                                        fill="currentColor"
+                                                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                                                                    />
+                                                                </svg>
+                                                            ) : (
+                                                                <DownloadIconSVG className="h-3.5 w-3.5" />
+                                                            )}
+                                                            Download
+                                                        </button>
+                                                        {isLastClicked &&
+                                                            !isDownloading && (
+                                                                <div className="last-used-tag">
+                                                                    Last used
+                                                                </div>
+                                                            )}
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     ))}

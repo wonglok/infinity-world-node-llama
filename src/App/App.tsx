@@ -123,6 +123,20 @@ export function App() {
 
     return (
         <div className="app p-5">
+            <button
+                className="home-button"
+                onClick={() => navigate("/")}
+                title="Back to setup"
+            >
+                <svg
+                    className="h-4 w-4"
+                    viewBox="0 -960 960 960"
+                    fill="currentColor"
+                >
+                    <path d="m313-440 196 196q12 12 11.5 28.5T508-187q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z" />
+                </svg>
+                Setup
+            </button>
             <Header
                 appVersion={state.appVersion}
                 canShowCurrentVersion={state.selectedModelFilePath == null}

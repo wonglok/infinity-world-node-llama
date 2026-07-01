@@ -186,17 +186,21 @@
     }
 
     > .loading {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
         opacity: 0.6;
-        font-weight: bold;
+        font-weight: 500;
+    }
 
-        mask: linear-gradient(
-                to right,
-                rgb(0 0 0 / 48%) 34%,
-                black,
-                rgb(0 0 0 / 48%) 66%
-            )
-            content-box 0 0 / 300% 100% no-repeat;
-        animation: loading-animation 2s infinite ease-in-out;
+    > .loading .loading-spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--text-color, #4a3f35);
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
     }
 
     > .typeMessage {
@@ -204,12 +208,8 @@
     }
 }
 
-@keyframes loading-animation {
-    0% {
-        mask-position: 100% 100%;
-    }
-
-    100% {
-        mask-position: 0 100%;
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
     }
 }

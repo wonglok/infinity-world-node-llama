@@ -150,7 +150,12 @@ export function App() {
                     {error != null && (
                         <div className="error">{String(error)}</div>
                     )}
-                    {loading && <div className="loading">Loading...</div>}
+                    {loading && (
+                        <div className="loading">
+                            <div className="loading-spinner" />
+                            Loading AI...
+                        </div>
+                    )}
                     {(state.selectedModelFilePath == null ||
                         state.llama.error != null) && (
                         <div className="loadModel">

@@ -58,137 +58,136 @@
     }
 }
 
-    > .chatHistory {
-        margin-bottom: 32px;
+> .chatHistory {
+    margin-bottom: 32px;
+}
+
+> .message {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 48px;
+    overflow: auto;
+    padding: 24px 0px;
+
+    > .error {
+        border: solid 2px var(--error-border-color);
+        padding: 10px 16px;
+        border-radius: 1rem;
+        box-shadow: 0px 8px 32px -16px var(--error-border-color);
     }
 
-    > .message {
-        flex: 1;
+    > .loadModel {
         display: flex;
         flex-direction: column;
-        justify-content: space-evenly;
         align-items: center;
-        gap: 48px;
-        overflow: auto;
-        padding: 24px 0px;
+        gap: 64px;
+        text-align: start;
 
-        > .error {
-            border: solid 2px var(--error-border-color);
-            padding: 10px 16px;
-            border-radius: 1rem;
-            box-shadow: 0px 8px 32px -16px var(--error-border-color);
+        > .hint {
+            opacity: 0.6;
         }
 
-        > .loadModel {
+        > .actions {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 64px;
-            text-align: start;
+            background-color: var(--actions-block-background-color);
+            border: solid 2px var(--actions-block-border-color);
+            box-shadow: var(--actions-block-box-shadow);
+            padding: 20px 28px;
+            border-radius: 1.25rem;
+            gap: 16px;
 
-            > .hint {
-                opacity: 0.6;
+            > .starLink {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 8px;
+                color: var(--star-link-color);
+
+                &:hover {
+                    color: var(--star-hover-color);
+                }
+
+                > .starIcon {
+                    flex-shrink: 0;
+                    fill: currentColor;
+                }
             }
 
-            > .actions {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                background-color: var(--actions-block-background-color);
-                border: solid 2px var(--actions-block-border-color);
-                box-shadow: var(--actions-block-box-shadow);
-                padding: 20px 28px;
-                border-radius: 1.25rem;
-                gap: 16px;
+            > .separator {
+                height: 1px;
+                background-color: var(--actions-block-border-color);
+                margin: 0px -24px;
+                align-self: stretch;
+            }
 
-                > .starLink {
+            > .title {
+                padding-inline-end: 16px;
+                color: var(--text-color);
+                opacity: 0.8;
+                font-weight: 600;
+            }
+
+            > .links {
+                display: flex;
+                flex-direction: row;
+
+                > a {
                     display: flex;
                     flex-direction: row;
                     align-items: center;
                     gap: 8px;
-                    color: var(--star-link-color);
 
-                    &:hover {
-                        color: var(--star-hover-color);
-                    }
-
-                    > .starIcon {
+                    > .downloadIcon {
                         flex-shrink: 0;
                         fill: currentColor;
                     }
                 }
 
                 > .separator {
-                    height: 1px;
-                    background-color: var(--actions-block-border-color);
-                    margin: 0px -24px;
-                    align-self: stretch;
+                    width: 1px;
+                    background-color: var(--link-color);
+                    opacity: 0.2;
+                    margin: 0px 16px;
+                    height: 0.8lh;
+                    align-self: center;
                 }
+            }
 
-                > .title {
-                    padding-inline-end: 16px;
-                    color: var(--text-color);
-                    opacity: 0.8;
-                    font-weight: 600;
-                }
+            > .browseLink {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 8px;
 
-                > .links {
-                    display: flex;
-                    flex-direction: row;
-
-                    > a {
-                        display: flex;
-                        flex-direction: row;
-                        align-items: center;
-                        gap: 8px;
-
-                        > .downloadIcon {
-                            flex-shrink: 0;
-                            fill: currentColor;
-                        }
-                    }
-
-                    > .separator {
-                        width: 1px;
-                        background-color: var(--link-color);
-                        opacity: 0.2;
-                        margin: 0px 16px;
-                        height: 0.8lh;
-                        align-self: center;
-                    }
-                }
-
-                > .browseLink {
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    gap: 8px;
-
-                    > .searchIcon {
-                        flex-shrink: 0;
-                        fill: currentColor;
-                    }
+                > .searchIcon {
+                    flex-shrink: 0;
+                    fill: currentColor;
                 }
             }
         }
+    }
 
-        > .loading {
-            opacity: 0.6;
-            font-weight: bold;
+    > .loading {
+        opacity: 0.6;
+        font-weight: bold;
 
-            mask: linear-gradient(
-                    to right,
-                    rgb(0 0 0 / 48%) 34%,
-                    black,
-                    rgb(0 0 0 / 48%) 66%
-                )
-                content-box 0 0 / 300% 100% no-repeat;
-            animation: loading-animation 2s infinite ease-in-out;
-        }
+        mask: linear-gradient(
+                to right,
+                rgb(0 0 0 / 48%) 34%,
+                black,
+                rgb(0 0 0 / 48%) 66%
+            )
+            content-box 0 0 / 300% 100% no-repeat;
+        animation: loading-animation 2s infinite ease-in-out;
+    }
 
-        > .typeMessage {
-            opacity: 0.6;
-        }
+    > .typeMessage {
+        opacity: 0.6;
     }
 }
 

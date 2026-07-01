@@ -32,7 +32,7 @@ export function FixedDivWithSpacer({
     return (
         <>
             <div className={classNames(className, "main")} {...props} />
-            <div ref={spacerRef} className={classNames(className, "spacer")} />
+            <div ref={spacerRef} className={classNames(className, "")} />
         </>
     );
 }

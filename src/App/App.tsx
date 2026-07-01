@@ -121,7 +121,7 @@ export function App() {
     return (
         <div className="mx-auto flex flex-col w-full min-h-full max-w-180 [--app-max-width:720px] relative p-5">
             <button
-                className="flex items-center gap-2"
+                className="inline-flex items-center gap-2 fixed top-[12px] left-[12px]"
                 onClick={() => navigate("/")}
                 title="Back to setup"
             >

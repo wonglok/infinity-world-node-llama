@@ -168,22 +168,26 @@ export function InputRow({
                         </div>
                     </div>
                 </div>
-                <button
-                    className="shrink-0 flex flex-col items-center justify-center py-2 px-3 m-2 rounded-[10px] bg-(--panel-button-background-color) text-(--panel-text-color) fill-(--panel-text-color) transition-all duration-300 hover:scale-106 active:scale-94 disabled:opacity-0"
-                    disabled={
-                        disabled || stopGeneration == null || !generatingResult
-                    }
-                    onClick={stopGeneration}
-                >
-                    <AbortIconSVG className="w-5 h-5" />
-                </button>
-                <button
-                    className="shrink-0 flex flex-col items-center justify-center py-2 px-3 m-2 ml-0 rounded-[10px] bg-(--panel-button-background-color) text-(--panel-text-color) fill-(--panel-text-color) transition-all duration-300 hover:scale-106 active:scale-94"
-                    disabled={disabled || inputText === "" || generatingResult}
-                    onClick={submitPrompt}
-                >
-                    <AddMessageIconSVG className="w-5 h-5" />
-                </button>
+                {generatingResult && stopGeneration != null && (
+                    <button
+                        className="shrink-0 flex flex-col items-center justify-center py-2 px-3 m-2 rounded-[10px] bg-(--panel-button-background-color) text-(--panel-text-color) fill-(--panel-text-color) transition-all duration-300 hover:scale-106 active:scale-94"
+                        disabled={disabled}
+                        onClick={stopGeneration}
+                    >
+                        <AbortIconSVG className="w-5 h-5" />
+                    </button>
+                )}
+                {!generatingResult && (
+                    <button
+                        className="shrink-0 flex flex-col items-center justify-center py-2 px-3 m-2 ml-0 rounded-[10px] bg-(--panel-button-background-color) text-(--panel-text-color) fill-(--panel-text-color) transition-all duration-300 hover:scale-106 active:scale-94"
+                        disabled={
+                            disabled || inputText === "" || generatingResult
+                        }
+                        onClick={submitPrompt}
+                    >
+                        <AddMessageIconSVG className="w-5 h-5" />
+                    </button>
+                )}
             </FixedDivWithSpacer>
         </>
     );

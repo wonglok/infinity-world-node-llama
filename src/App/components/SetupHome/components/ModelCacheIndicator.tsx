@@ -14,6 +14,7 @@ export function ModelCacheIndicator({ modelUri }: { modelUri: string }) {
         electronLlmRpc
             .checkModelCached(modelUri)
             .then((res) => {
+                console.log(res);
                 if (!cancelled) {
                     setInfo(res);
                     setLoading(false);
@@ -32,7 +33,11 @@ export function ModelCacheIndicator({ modelUri }: { modelUri: string }) {
     }, [modelUri]);
 
     if (loading) {
-        return <span className="cache-indicator cache-indicator--loading">···</span>;
+        return (
+            <span className="cache-indicator cache-indicator--loading">
+                ···
+            </span>
+        );
     }
 
     if (info?.cached) {
@@ -43,5 +48,9 @@ export function ModelCacheIndicator({ modelUri }: { modelUri: string }) {
         );
     }
 
-    return <span className="cache-indicator cache-indicator--not-cached">Not cached</span>;
+    return (
+        <span className="cache-indicator cache-indicator--not-cached">
+            Not cached
+        </span>
+    );
 }

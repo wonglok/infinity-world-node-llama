@@ -125,8 +125,10 @@ export class ElectronLlmRpc {
             const ggufFiles = await findGgufFiles(directory);
             for (const filePath of ggufFiles) {
                 const lowerPath = filePath.toLowerCase();
+
                 if (
-                    lowerPath.includes(repoName) &&
+                    // must keep repoName.replace("-gguf", "")
+                    lowerPath.includes(repoName.replace("-gguf", "")) &&
                     lowerPath.includes(quantLower)
                 ) {
                     return { cached: true, filePath };

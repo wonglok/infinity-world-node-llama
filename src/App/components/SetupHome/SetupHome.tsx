@@ -129,6 +129,7 @@ export function SetupHome() {
             return null;
         }
     });
+    const [pendingUri, setPendingUri] = useState<string | null>(null);
 
     const downloadModel = useCallback(async (uri: string) => {
         try {
@@ -137,7 +138,9 @@ export function SetupHome() {
             // ignore storage errors
         }
         setLastClickedUri(uri);
+        setPendingUri(uri);
         await electronLlmRpc.pullModel(uri);
+        setPendingUri(null);
     }, []);
 
     const openFileDialog = useCallback(async () => {
@@ -270,9 +273,10 @@ export function SetupHome() {
                                             const isLastClicked =
                                                 v.uri === lastClickedUri;
                                             const isDownloading =
-                                                modelDownload.downloading &&
-                                                modelDownload.modelUri ===
-                                                    v.uri;
+                                                (modelDownload.downloading &&
+                                                    modelDownload.modelUri ===
+                                                        v.uri) ||
+                                                pendingUri === v.uri;
                                             return (
                                                 <tr
                                                     key={v.uri}
@@ -338,7 +342,9 @@ export function SetupHome() {
                                                             ) : (
                                                                 <DownloadIconSVG className="h-3.5 w-3.5" />
                                                             )}
-                                                            Download
+                                                            {isDownloading
+                                                                ? "Loading…"
+                                                                : "Download"}
                                                         </button>
                                                         {isLastClicked &&
                                                             !isDownloading && (

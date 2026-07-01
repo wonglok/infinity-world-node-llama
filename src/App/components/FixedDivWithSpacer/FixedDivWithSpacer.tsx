@@ -1,25 +1,27 @@
-import React, {useLayoutEffect, useRef} from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import classNames from "classnames";
 
-export function FixedDivWithSpacer({className, ...props}: FixedDivWithSpacerProps) {
+export function FixedDivWithSpacer({
+    className,
+    ...props
+}: FixedDivWithSpacerProps) {
     const spacerRef = useRef<HTMLDivElement>(null);
 
     useLayoutEffect(() => {
-        if (spacerRef.current == null)
-            return;
+        if (spacerRef.current == null) return;
 
         const spacerTag = spacerRef.current;
-        const mainTag = spacerTag.previousElementSibling as HTMLDivElement | null;
+        const mainTag =
+            spacerTag.previousElementSibling as HTMLDivElement | null;
 
-        if (mainTag == null)
-            return;
+        if (mainTag == null) return;
 
         const resizeObserver = new ResizeObserver(() => {
             spacerTag.style.width = `${mainTag.offsetWidth}px`;
             spacerTag.style.height = `${mainTag.offsetHeight}px`;
         });
         resizeObserver.observe(mainTag, {
-            box: "content-box"
+            box: "content-box",
         });
 
         return () => {
@@ -27,11 +29,16 @@ export function FixedDivWithSpacer({className, ...props}: FixedDivWithSpacerProp
         };
     }, [spacerRef]);
 
-    return <>
-        <div className={classNames(className, "main")} {...props} />
-        <div ref={spacerRef} className={classNames(className, "spacer")} />
-    </>;
+    return (
+        <>
+            <div className={classNames(className, "main")} {...props} />
+            <div ref={spacerRef} className={classNames(className, "spacer")} />
+        </>
+    );
 }
 
-type DivProps = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+type DivProps = React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+>;
 type FixedDivWithSpacerProps = DivProps;

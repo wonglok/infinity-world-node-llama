@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { llmState } from "../state/llmState.ts";
 import { electronLlmRpc } from "../rpc/llmRpc.ts";
 import { useExternalState } from "../hooks/useExternalState.ts";
-import { Header } from "./components/Header/Header.tsx";
+// import { Header } from "./components/Header/Header.tsx";
 import { ChatHistory } from "./components/ChatHistory/ChatHistory.tsx";
 import { InputRow } from "./components/InputRow/InputRow.tsx";
 
@@ -122,9 +122,9 @@ export function App() {
         state.chatSession.simplifiedChat.length === 0;
 
     return (
-        <div className="app p-5">
+        <div id="AppArea" className="app p-5">
             <button
-                className="home-button"
+                className="flex items-center space-x-3"
                 onClick={() => navigate("/")}
                 title="Back to setup"
             >
@@ -135,16 +135,21 @@ export function App() {
                 >
                     <path d="m313-440 196 196q12 12 11.5 28.5T508-187q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z" />
                 </svg>
-                Setup
+                <span>Setup</span>
             </button>
-            <Header
-                appVersion={state.appVersion}
-                canShowCurrentVersion={state.selectedModelFilePath == null}
-                modelName={state.model.name}
-                loadPercentage={state.model.loadProgress}
-                onLoadClick={openSelectModelFileDialog}
-                onResetChatClick={!showMessage ? resetChatHistory : undefined}
-            />
+            {/* <div className=" flex justify-end">
+                <Header
+                    appVersion={state.appVersion}
+                    canShowCurrentVersion={state.selectedModelFilePath == null}
+                    modelName={state.model.name}
+                    loadPercentage={state.model.loadProgress}
+                    onLoadClick={openSelectModelFileDialog}
+                    onResetChatClick={
+                        !showMessage ? resetChatHistory : undefined
+                    }
+                />
+            </div> */}
+
             {showMessage && (
                 <div className="message">
                     {error != null && (

@@ -6,6 +6,7 @@ import { useExternalState } from "../../../hooks/useExternalState.ts";
 import { DownloadIconSVG } from "../../../icons/DownloadIconSVG.tsx";
 import { LoadFileIconSVG } from "../../../icons/LoadFileIconSVG.tsx";
 import { ModelRamChecker } from "./components/ModelRamChecker.tsx";
+import { ModelCacheIndicator } from "./components/ModelCacheIndicator.tsx";
 
 import "./SetupHome.css";
 
@@ -312,6 +313,11 @@ export function SetupHome() {
                                                 )}
                                             <div className="ram-info">
                                                 <ModelRamChecker
+                                                    modelUri={v.uri}
+                                                />
+                                            </div>
+                                            <div className="cache-info">
+                                                <ModelCacheIndicator
                                                     modelUri={v.uri}
                                                 />
                                             </div>

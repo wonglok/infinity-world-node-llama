@@ -276,6 +276,34 @@
     animation: floatUp 0.3s ease-out both;
 }
 
+.setup-home .cache-info {
+    font-size: 0.6rem;
+    font-weight: 500;
+    animation: floatUp 0.3s ease-out both;
+}
+
+.setup-home .cache-indicator {
+    display: inline-block;
+    border-radius: 9999px;
+    padding: 0.12rem 0.5rem;
+    letter-spacing: 0.02em;
+}
+
+.setup-home .cache-indicator--loading {
+    color: #c4a88c;
+}
+
+.setup-home .cache-indicator--cached {
+    background: rgba(52, 199, 89, 0.12);
+    color: #2e7d32;
+    border: 1px solid rgba(52, 199, 89, 0.25);
+}
+
+.setup-home .cache-indicator--not-cached {
+    color: #c4a88c;
+    opacity: 0.6;
+}
+
 .setup-home .progress-bar-track {
     height: 0.7rem;
     border-radius: 9999px;

@@ -11,6 +11,11 @@ import {
 } from "../state/llmState.ts";
 import type { RenderedFunctions } from "../../src/rpc/llmRpc.ts";
 
+export type ModelCacheInfo = {
+    cached: boolean;
+    filePath?: string;
+};
+
 export type ModelResourcesInfo = {
     modelRamRequired: number;
     systemRamTotal: number;
@@ -101,6 +106,34 @@ export class ElectronLlmRpc {
         prompt: llmFunctions.chatSession.prompt,
         stopActivePrompt: llmFunctions.chatSession.stopActivePrompt,
         resetChatHistory: llmFunctions.chatSession.resetChatHistory,
+        async checkModelCached(modelUri: string): Promise<ModelCacheInfo> {
+            const directory =
+                llmState.state.modelsDirectory ?? defaultModelsDirectory;
+
+            // Parse the URI: hf:user/repo:quant
+            const firstColon = modelUri.indexOf(":");
+            const lastColon = modelUri.lastIndexOf(":");
+            const repoPath =
+                firstColon >= 0 && lastColon > firstColon
+                    ? modelUri.slice(firstColon + 1, lastColon)
+                    : "";
+            const quant = lastColon >= 0 ? modelUri.slice(lastColon + 1) : "";
+            const repoName = repoPath.split("/").pop()?.toLowerCase() ?? "";
+            const quantLower = quant.toLowerCase();
+
+            // Scan the models directory recursively for .gguf files
+            const ggufFiles = await findGgufFiles(directory);
+            for (const filePath of ggufFiles) {
+                const lowerPath = filePath.toLowerCase();
+                if (
+                    lowerPath.includes(repoName) &&
+                    lowerPath.includes(quantLower)
+                ) {
+                    return { cached: true, filePath };
+                }
+            }
+            return { cached: false };
+        },
         async checkModelResources(
             modelUri: string,
         ): Promise<ModelResourcesInfo> {
@@ -145,6 +178,25 @@ export type ElectronFunctions = typeof ElectronLlmRpc.prototype.functions;
 
 export function registerLlmRpc(window: BrowserWindow) {
     new ElectronLlmRpc(window);
+}
+
+async function findGgufFiles(dir: string): Promise<string[]> {
+    const results: string[] = [];
+    try {
+        const entries = await fs.readdir(dir, { withFileTypes: true });
+        for (const entry of entries) {
+            const fullPath = path.join(dir, entry.name);
+            if (entry.isDirectory()) {
+                const subResults = await findGgufFiles(fullPath);
+                results.push(...subResults);
+            } else if (entry.isFile() && entry.name.endsWith(".gguf")) {
+                results.push(fullPath);
+            }
+        }
+    } catch {
+        // Directory doesn't exist or can't be read
+    }
+    return results;
 }
 
 async function pathExists(path: string) {

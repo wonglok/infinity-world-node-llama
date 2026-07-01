@@ -6,12 +6,13 @@
 }
 
 .app {
+    margin: 0px auto;
     display: flex;
     flex-direction: column;
     width: 100%;
     min-height: 100%;
-    max-width: 1280px;
-    --app-max-width: 1280px;
+    max-width: 720px;
+    --app-max-width: 720px;
 
     > .chatHistory {
         margin-bottom: 32px;

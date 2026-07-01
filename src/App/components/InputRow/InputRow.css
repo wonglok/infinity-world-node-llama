@@ -16,8 +16,6 @@
         position: fixed;
         background-color: var(--panel-background-color);
         border-radius: 1.25rem;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
         box-shadow: var(--panel-box-shadow);
         overflow: clip;
         color: var(--panel-text-color);

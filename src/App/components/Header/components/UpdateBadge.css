@@ -20,8 +20,6 @@
         border: solid 2px var(--update-badge-border-color);
         box-shadow: var(--update-badge-box-shadow);
         border-radius: 1rem;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
         padding: 8px 14px;
         margin: 0px 8px;
 

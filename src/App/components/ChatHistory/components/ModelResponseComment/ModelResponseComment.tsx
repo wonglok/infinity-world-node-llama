@@ -68,9 +68,6 @@ export function ModelResponseComment({
                         </span>
                         <MarkdownContent
                             className={`rc-excerpt whitespace-nowrap overflow-hidden flex justify-end self-center opacity-[0.24] ms-1 select-none transition-[margin-inline-start,width,opacity] duration-300 ease-(--transition-easing) ${isOpen ? "opacity-0 ms-0 [transition-delay:0s,0s]" : "[transition-delay:0s,0s,0.2s]"}`}
-                            style={{
-                                mask: "linear-gradient(to right, transparent, black 64px)",
-                            }}
                             dir="auto"
                             inline
                         >

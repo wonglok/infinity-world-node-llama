@@ -94,8 +94,9 @@ export function MessageMarkdown({
                     100% { transform: scale(1); opacity: 0.64; }
                 }
             `}</style>
+
             <MarkdownContent
-                className={`md wrap-break-word [&>:first-child]:mt-0 [&>:last-child]:mb-0 [&_*]:[unicode-bidi:plaintext] [&_h2]:my-4 [&_h2]:pt-6 [&_h3]:mt-8 [&_h3]:mb-0 [&_hr]:bg-(--message-hr-color) [&_hr]:h-0.5 [&_hr]:border-none [&_hr]:rounded-xl [&_blockquote]:mx-0 [&_blockquote]:ps-6 [&_blockquote]:opacity-[0.64] [&_blockquote]:border-none [&_blockquote]:relative ${activeDot ? "active" : ""} ${className ?? ""}`}
+                className={`inline-block md leading-9 tracking-tight  ${activeDot ? "active" : ""} ${className ?? ""}`}
             >
                 {renderContent}
             </MarkdownContent>

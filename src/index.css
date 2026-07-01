@@ -126,8 +126,8 @@
     --star-hover-color: light-dark(#9a7b3a, #f0e0c8);
 
     --panel-background-color: light-dark(
-        rgba(255 255 255 / 55%),
-        rgba(60 30 15 / 50%)
+        rgba(255 255 255 / 90%),
+        rgba(60 30 15 / 60%)
     );
     --panel-text-color: light-dark(#4a3f35, #f5e6dc);
     --panel-button-background-color: light-dark(

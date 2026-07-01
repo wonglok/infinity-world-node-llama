@@ -4,7 +4,7 @@ import { SimplifiedUserChatItem } from "../../../../../../electron/state/llmStat
 export function UserMessage({ message }: UserMessageProps) {
     return (
         <div className="self-end max-w-[calc(100%-48px-12px)] ms-12 me-4 mb-4 first:mt-0 mt-9 animate-[floatUp_0.3s_ease-out_both]">
-            <div className="relative">
+            <div className="relative flex justify-end">
                 <MessageMarkdown className="bg-(--user-message-background-color) text-(--user-message-text-color) py-2.5 px-4 rounded-[1.25rem] wrap-break-word box-border shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.03)]">
                     {message.message}
                 </MessageMarkdown>

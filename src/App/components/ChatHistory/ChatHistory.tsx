@@ -1,13 +1,20 @@
-import {useMemo} from "react";
+import { useMemo } from "react";
 import classNames from "classnames";
-import {LlmState, SimplifiedModelChatItem} from "../../../../electron/state/llmState.ts";
-import {UserMessage} from "./components/UserMessage/UserMessage.js";
-import {ModelMessage} from "./components/ModelMessage/ModelMessage.js";
+import {
+    LlmState,
+    SimplifiedModelChatItem,
+} from "../../../../electron/state/llmState.ts";
+import { UserMessage } from "./components/UserMessage/UserMessage.js";
+import { ModelMessage } from "./components/ModelMessage/ModelMessage.js";
 
-
-export function ChatHistory({simplifiedChat, generatingResult, className}: ChatHistoryProps) {
+export function ChatHistory({
+    simplifiedChat,
+    generatingResult,
+    className,
+}: ChatHistoryProps) {
     const renderChatItems = useMemo(() => {
-        if (simplifiedChat.length > 0 &&
+        if (
+            simplifiedChat.length > 0 &&
             simplifiedChat.at(-1)!.type !== "model" &&
             generatingResult
         )
@@ -16,32 +23,39 @@ export function ChatHistory({simplifiedChat, generatingResult, className}: ChatH
         return simplifiedChat;
     }, [simplifiedChat, generatingResult]);
 
-    return <div className={classNames("appChatHistory", className)}>
-        {
-            renderChatItems
-                .map((item, index) => {
-                    if (item.type === "model")
-                        return <ModelMessage
+    return (
+        <div className={classNames("appChatHistory", className)}>
+            <div className=" h-[50px]"></div>
+            {renderChatItems.map((item, index) => {
+                if (item.type === "model")
+                    return (
+                        <ModelMessage
                             key={index}
                             modelMessage={item}
-                            active={index === renderChatItems.length - 1 && generatingResult}
-                        />;
-                    else if (item.type === "user")
-                        return <UserMessage key={index} message={item} />;
+                            active={
+                                index === renderChatItems.length - 1 &&
+                                generatingResult
+                            }
+                        />
+                    );
+                else if (item.type === "user")
+                    return <UserMessage key={index} message={item} />;
 
-                    return null;
-                })
-        }
-    </div>;
+                return null;
+            })}
+
+            <div className=" h-[100px]"></div>
+        </div>
+    );
 }
 
 type ChatHistoryProps = {
-    simplifiedChat: LlmState["chatSession"]["simplifiedChat"],
-    generatingResult: boolean,
-    className?: string
+    simplifiedChat: LlmState["chatSession"]["simplifiedChat"];
+    generatingResult: boolean;
+    className?: string;
 };
 
 const emptyModelMessage: SimplifiedModelChatItem = {
     type: "model",
-    message: []
+    message: [],
 };

@@ -18,7 +18,7 @@
     "start:inspect": "cross-env ENABLE_INSPECT=true vite dev",
     "start:build": "electron ./dist-electron",
     "prebuild": "rimraf ./dist ./dist-electron ./release",
-    "build:mac": "APPLE_KEYCHAIN=login APPLE_KEYCHAIN_PROFILE=WONG_LOK_PROFILE tsc && vite build && electron-builder --config ./electron-builder.ts --mac",
+    "build:mac": "APPLE_KEYCHAIN=login APPLE_KEYCHAIN_PROFILE=WONG_LOK_PROFILE tsc && vite build && electron-builder --mac --config ./electron-builder.ts",
     "build": "APPLE_KEYCHAIN=login APPLE_KEYCHAIN_PROFILE=WONG_LOK_PROFILE tsc && vite build && electron-builder --config ./electron-builder.ts",
     "lint": "npm run lint:eslint",
     "lint:eslint": "eslint --report-unused-disable-directives .",

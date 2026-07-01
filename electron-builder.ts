@@ -1,9 +1,9 @@
-import path from "node:path";
-import { $ } from "zx";
+// import path from "node:path";
+// import { $ } from "zx";
 import type { Configuration } from "electron-builder";
-import { handlerNota } from "./scripts/nota.mjs";
+import { handler } from "./scripts/nota.mjs";
 
-const appId = "infinity-ai.wonglok.com";
+const appId = "com.wonglok.infinity-ai";
 const productName = "infinity-ai world";
 const executableName = "infinity-ai-world";
 const appxIdentityName = "infinity-ai.wonglok.com";
@@ -23,26 +23,26 @@ export default {
 
     // remove this once you set up your own code signing for macOS
     async afterPack(context) {
-        if (context.electronPlatformName === "darwin") {
-            console.log("begin sign");
-            // check whether the app was already signed
-            const appPath = path.join(
-                context.appOutDir,
-                `${context.packager.appInfo.productFilename}.app`,
-            );
-            // // this is needed for the app to not appear as "damaged" on Apple Silicon Macs
-            // // https://github.com/electron-userland/electron-builder/issues/5850#issuecomment-1821648559
-            await $`codesign --force --deep --sign - ${appPath}`;
-            console.log("done sign");
-        }
+        //
+        //
+        // if (context.electronPlatformName === "darwin") {
+        //     console.log("begin sign");
+        //     // check whether the app was already signed
+        //     const appPath = path.join(
+        //         context.appOutDir,
+        //         `${context.packager.appInfo.productFilename}.app`,
+        //     );
+        //     console.log("appPath", appPath);
+        //     // // this is needed for the app to not appear as "damaged" on Apple Silicon Macs
+        //     // // https://github.com/electron-userland/electron-builder/issues/5850#issuecomment-1821648559
+        //     await $`codesign --force --deep --sign - ${appPath}`;
+        //     console.log("done sign");
+        // }
+        //
+        // "./scripts/nota.mjs"
     },
     afterSign: async (context) => {
-        const appPath = path.join(
-            context.appOutDir,
-            `${context.packager.appInfo.productFilename}.app`,
-        );
-
-        await handlerNota({ appPath: appPath });
+        await handler();
     },
     files: [
         "dist",
@@ -59,17 +59,38 @@ export default {
         "node_modules/node-llama-cpp/llama/localBuilds",
         "node_modules/@node-llama-cpp/*",
     ],
+
+    dmg: {
+        sign: false,
+    },
     mac: {
         target: [
-            {
-                target: "dmg",
-                arch: ["arm64", "x64"],
-            },
+            // {
+            //     target: "dmg",
+            //     arch: ["arm64", "x64"],
+            // },
+            //
             {
                 target: "zip",
-                arch: ["arm64", "x64"],
+                arch: ["arm64"], // , "x64"
             },
         ],
+        sign: null,
+        hardenedRuntime: true,
+        gatekeeperAssess: false,
+        entitlements: "build/entitlements.mac.plist",
+        entitlementsInherit: "build/entitlements.mac.plist",
+        extendInfo: {
+            NSCameraUsageDescription:
+                "Application requests access to the device's camera.",
+            NSMicrophoneUsageDescription:
+                "Application requests access to the device's microphone.",
+            NSDocumentsFolderUsageDescription:
+                "Application requests access to the user's Documents folder.",
+            NSDownloadsFolderUsageDescription:
+                "Application requests access to the user's Downloads folder.",
+        },
+        notarize: true,
 
         artifactName: "${name}.macOS.${version}.${arch}.${ext}",
     },
@@ -80,6 +101,9 @@ export default {
                 arch: ["x64", "arm64"],
             },
         ],
+
+        forceCodeSigning: false,
+        verifyUpdateCodeSignature: false,
 
         artifactName: "${name}.Windows.${version}.${arch}.${ext}",
     },

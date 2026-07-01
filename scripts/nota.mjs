@@ -5,20 +5,13 @@ import path from 'path'
 console.log('loaded: notarize')
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const handlerNota = async function ({ appPath = '' }) {
-  /*
-APPLE_KEYCHAIN=login APPLE_KEYCHAIN_PROFILE=WONG_LOK_PROFILE 
-APPLE_KEYCHAIN=login APPLE_KEYCHAIN_PROFILE=WONG_LOK_PROFILE 
-        */
-
+export const handler = async function () {
   // context: any
-  console.log('notarize: start')
-  await notarize({
-    // APPLE_KEYCHAIN=login APPLE_KEYCHAIN_PROFILE=WONG_LOK_PROFILE 
+  console.log('notarize: start');
 
-    appPath: appPath || path.join(import.meta.dirname, '../dist/mac-arm64/hyperegg-ai.app'),
-    keychainProfile: 'WONG_LOK_PROFILE',
-    keychain: 'login'
+  await notarize({
+    appPath: path.join(import.meta.dirname, '../release/mac-arm64/infinity-ai-world.app'),
+    keychainProfile: 'WONG_LOK_PROFILE'
 
     // add to bashrc or zshrc:
     // APPLE_KEYCHAIN=login
@@ -31,4 +24,4 @@ APPLE_KEYCHAIN=login APPLE_KEYCHAIN_PROFILE=WONG_LOK_PROFILE
   return null
 }
 
-export default handlerNota
+export default handler

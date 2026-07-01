@@ -4,8 +4,6 @@ import {LlmState, SimplifiedModelChatItem} from "../../../../electron/state/llmS
 import {UserMessage} from "./components/UserMessage/UserMessage.js";
 import {ModelMessage} from "./components/ModelMessage/ModelMessage.js";
 
-import "./ChatHistory.css";
-
 
 export function ChatHistory({simplifiedChat, generatingResult, className}: ChatHistoryProps) {
     const renderChatItems = useMemo(() => {

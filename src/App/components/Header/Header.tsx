@@ -2,8 +2,6 @@ import { LoadFileIconSVG } from "../../../icons/LoadFileIconSVG.tsx";
 import { DeleteIconSVG } from "../../../icons/DeleteIconSVG.tsx";
 import { FixedDivWithSpacer } from "../FixedDivWithSpacer/FixedDivWithSpacer.tsx";
 
-import "./Header.css";
-
 export function Header({
     appVersion,
     canShowCurrentVersion,

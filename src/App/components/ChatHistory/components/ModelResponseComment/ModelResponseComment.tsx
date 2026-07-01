@@ -4,8 +4,6 @@ import {MessageMarkdown} from "../../../MessageMarkdown/MessageMarkdown.js";
 import {RightChevronIconSVG} from "../../../../../icons/RightChevronIconSVG.js";
 import {MarkdownContent} from "../../../MarkdownContent/MarkdownContent.js";
 
-import "./ModelResponseComment.css";
-
 const excerptLength = 1024;
 
 export function ModelResponseComment({text, active}: ModelResponseCommentProps) {

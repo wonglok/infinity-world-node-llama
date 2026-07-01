@@ -4,8 +4,6 @@ import {CopyIconSVG} from "../../../../../../../icons/CopyIconSVG.js";
 import {CheckIconSVG} from "../../../../../../../icons/CheckIconSVG.js";
 import {SimplifiedModelChatItem} from "../../../../../../../../electron/state/llmState.js";
 
-import "./ModelMessageCopyButton.css";
-
 const showCopiedTime = 1000 * 2;
 
 export function ModelMessageCopyButton({modelMessage}: ModelMessageCopyButtonProps) {

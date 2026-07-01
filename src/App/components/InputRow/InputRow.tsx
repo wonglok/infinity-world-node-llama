@@ -4,8 +4,6 @@ import {AddMessageIconSVG} from "../../../icons/AddMessageIconSVG.tsx";
 import {AbortIconSVG} from "../../../icons/AbortIconSVG.tsx";
 import {FixedDivWithSpacer} from "../FixedDivWithSpacer/FixedDivWithSpacer.tsx";
 
-import "./InputRow.css";
-
 
 export function InputRow({
     disabled = false, stopGeneration, sendPrompt, onPromptInput, autocompleteInputDraft, autocompleteCompletion, generatingResult

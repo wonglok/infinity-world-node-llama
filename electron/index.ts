@@ -2,6 +2,7 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { app, shell, BrowserWindow } from "electron";
 import { registerLlmRpc } from "./rpc/llmRpc.ts";
+import { registerWorkspaceRpc } from "./rpc/workspaceRpc.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -39,6 +40,7 @@ function createWindow() {
         height: 700,
     });
     registerLlmRpc(win);
+    registerWorkspaceRpc(win);
 
     // open external links in the default browser
     win.webContents.setWindowOpenHandler(({ url }) => {

@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 
 export function GamePage() {
     return (
